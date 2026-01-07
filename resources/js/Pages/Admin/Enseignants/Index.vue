@@ -93,15 +93,15 @@ const confirmDelete = async (id) => {
             <td class="px-6 py-3 text-center">
               <Link
                 :href="route('enseignants.edit', ens.id)"
-                class="text-blue-600 hover:underline mr-3"
+                class="text-blue-600 hover:text-blue-800 font-medium"
               >
-                ✏️ Modifier
+                🖋️ Modifier
               </Link>
               <button
                 @click="confirmDelete(ens.id)"
-                class="text-red-600 hover:underline"
+                class="text-red-600 hover:text-red-800 font-medium"
               >
-                🗑️ Supprimer
+                ❌ Supprimer
               </button>
             </td>
           </tr>

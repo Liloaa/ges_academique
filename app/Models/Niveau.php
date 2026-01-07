@@ -12,7 +12,7 @@ class Niveau extends Model
     protected $fillable = [
         'nomNiveau',
         'description',
-        'section',
+        'cycle',
         'filiere_id',
     ];
 
@@ -21,15 +21,18 @@ class Niveau extends Model
         return $this->belongsTo(Filiere::class);
     }
 
-    public function salle() {
+    public function salles()
+    {
         return $this->hasMany(Salle::class);
     }
 
-    public function matieres() {
+    public function matieres()
+    {
         return $this->hasMany(Matiere::class);
     }
 
-    public function inscriptions() {
+    public function inscriptions()
+    {
         return $this->hasMany(Inscription::class);
     }
 }

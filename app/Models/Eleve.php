@@ -30,4 +30,13 @@ class Eleve extends Model
     {
         return $this->hasMany(Inscription::class);
     }
+
+    protected static function booted()
+{
+    static::deleting(function ($eleve) {
+        if ($eleve->user) {
+            $eleve->user->delete();
+        }
+    });
+}
 }

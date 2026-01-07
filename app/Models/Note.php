@@ -16,6 +16,12 @@ class Note extends Model
         'trimestre',
         'note',
         'date_saisie',
+        'commentaire',
+    ];
+
+    protected $casts = [
+        'note' => 'decimal:2',
+        'date_saisie' => 'date:Y-m-d',
     ];
 
     public function inscription() {
@@ -28,5 +34,36 @@ class Note extends Model
 
     public function enseignant() {
         return $this->belongsTo(Enseignant::class);
+    }
+
+    /**
+     * Validation pour éviter les doublons
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $exists = self::where('inscription_id', $model->inscription_id)
+                ->where('matiere_id', $model->matiere_id)
+                ->where('trimestre', $model->trimestre)
+                ->exists();
+
+            if ($exists) {
+                throw new \Exception('Une note existe déjà pour cette matière et ce trimestre.');
+            }
+        });
+
+        static::updating(function ($model) {
+            $exists = self::where('inscription_id', $model->inscription_id)
+                ->where('matiere_id', $model->matiere_id)
+                ->where('trimestre', $model->trimestre)
+                ->where('id', '!=', $model->id)
+                ->exists();
+
+            if ($exists) {
+                throw new \Exception('Une note existe déjà pour cette matière et ce trimestre.');
+            }
+        });
     }
 }

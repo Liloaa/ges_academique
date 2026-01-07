@@ -8,12 +8,8 @@ const form = useForm({
     libelle: '',
 })
 
-function submit() {
-    form.post(route('anneesscolaires.store'), {
-        onSuccess: () => {
-            window.location.href = route('anneesscolaires.index')
-        },
-    })
+const submit = () => {
+  form.post('/admin/anneesscolaires')
 }
 </script>
 
@@ -49,8 +45,9 @@ function submit() {
                 <button
                     type="submit"
                     class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    :disabled="form.processing"
                 >
-                    Ajouter
+                    {{ form.processing ? 'Enregistrement...' : '💾 Enregistrer l\'année scolaire' }}
                 </button>
             </div>
         </form>

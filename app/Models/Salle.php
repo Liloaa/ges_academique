@@ -20,7 +20,7 @@ class Salle extends Model
         return $this->belongsTo(Niveau::class);
     }
 
-    public function inscription()
+    public function inscriptions()
     {
         return $this->hasMany(Inscription::class);
     }
@@ -28,7 +28,15 @@ class Salle extends Model
     // Effectif actuel
     public function getEffectifAttribute()
     {
-        return $this->inscriptions()->count();
+        $anneeActive = AnneeScolaire::where('active', 1)->first();
+
+        if (!$anneeActive) {
+            return 0;
+        }
+
+        return $this->inscriptions()
+            ->where('annee_scolaire_id', $anneeActive->id)
+            ->count();
     }
 
     // Taux de remplissage %

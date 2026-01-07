@@ -15,7 +15,7 @@ class EleveController extends Controller
     // LISTE DES ELEVES
     public function index()
     {
-        $eleves = Eleve::with(['user'])
+        $eleves = Eleve::with(['user', 'inscriptions'])
             ->orderBy('id', 'desc')
             ->get();
 
@@ -38,7 +38,7 @@ class EleveController extends Controller
             'nom' => 'required|string|max:100',
             'prenom' => 'required|string|max:100',
             'date_naissance' => 'nullable|date',
-            'email' => 'nullable|email|unique:users,email',
+            'email' => 'required|email|unique:users,email',
             'sexe' => 'nullable|string',
             'adresse' => 'nullable|string',
             'telephone' => 'nullable|string|max:20',
@@ -47,24 +47,27 @@ class EleveController extends Controller
 
         DB::beginTransaction();
         try {
-            $userId = null;
-
-            // CRÉATION USER SI EMAIL
-            if ($request->email) {
-                $user = User::create([
-                    'prenom' => $request->prenom,
-                    'nom' => $request->nom,
-                    'email' => $request->email,
-                    'password' => bcrypt($request->password),
-                    'role' => 'eleve',
-                ]);
-                $userId = $user->id;
-            }
+            // CRÉATION USER
+            $user = User::create([
+                'prenom' => $request->prenom,
+                'nom' => $request->nom,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role' => 'eleve',
+            ]);
 
             // CRÉATION ELEVE
-            Eleve::create(array_merge($request->only([
-                'matricule','nom','prenom','date_naissance','email','sexe','adresse','telephone'
-            ]), ['user_id' => $userId]));
+            Eleve::create([
+                'matricule' => $request->matricule,
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'date_naissance' => $request->date_naissance,
+                'email' => $request->email,
+                'sexe' => $request->sexe,
+                'adresse' => $request->adresse,
+                'telephone' => $request->telephone,
+                'user_id' => $user->id,
+            ]);
 
             DB::commit();
 
@@ -93,42 +96,39 @@ class EleveController extends Controller
             'nom' => 'required|string|max:100',
             'prenom' => 'required|string|max:100',
             'date_naissance' => 'nullable|date',
-            'email' => 'nullable|email|unique:users,email,' . $eleve->user_id,
+            'email' => 'required|email|unique:users,email,' . ($eleve->user_id ?? 'NULL'),
             'sexe' => 'nullable|string',
             'adresse' => 'nullable|string',
             'telephone' => 'nullable|string|max:20',
-            'password' => 'required|string|min:4|confirmed',
+            'password' => 'nullable|string|min:4|confirmed',
         ]);
 
         DB::beginTransaction();
 
         try {
-            // GESTION USER
-            if ($eleve->user || $request->email) {
-                if ($eleve->user) {
-                    $user = $eleve->user;
-                    $user->prenom = $request->prenom;
-                    $user->nom = $request->nom;
-                    if ($request->email) $user->email = $request->email;
-                    if ($request->password) $user->password = Hash::make($request->password);
-                    $user->save();
-                } 
-                else {
-                    $user = User::create([
-                        'prenom' => $request->prenom,
-                        'nom' => $request->nom,
-                        'email' => $request->email,
-                        'password' => bcrypt($request->password),
-                        'role' => 'eleve',
-                    ]);
-                    $eleve->user_id = $user->id;
-                }
+            // MISE À JOUR USER
+            $user = $eleve->user;
+            $user->prenom = $request->prenom;
+            $user->nom = $request->nom;
+            $user->email = $request->email;
+            
+            if ($request->password) {
+                $user->password = Hash::make($request->password);
             }
+            
+            $user->save();
 
             // MISE À JOUR ELEVE
-            $eleve->update($request->only([
-                'matricule','nom','prenom','date_naissance','email','sexe','adresse','telephone'
-            ]));
+            $eleve->update([
+                'matricule' => $request->matricule,
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'date_naissance' => $request->date_naissance,
+                'email' => $request->email,
+                'sexe' => $request->sexe,
+                'adresse' => $request->adresse,
+                'telephone' => $request->telephone,
+            ]);
 
             DB::commit();
 
@@ -153,10 +153,11 @@ class EleveController extends Controller
         }
     }
 
-    // HISTORIQUE (SI INSCRIPTIONS EXISTENT)
+    // HISTORIQUE DES INSCRIPTIONS
     public function historique(Eleve $eleve)
     {
         $inscriptions = $eleve->inscriptions()
+            ->with(['salle.niveau', 'annee'])
             ->orderBy('date_inscription', 'desc')
             ->get();
 

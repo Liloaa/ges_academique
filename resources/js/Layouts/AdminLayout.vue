@@ -3,18 +3,17 @@
     <!-- Header avec infos utilisateur -->
     <header class="dashboard-header">
       <div class="header-left">
-        <h1 class="greeting">Hello {{ user.name }}</h1>
-        <p class="sub-greeting">Have a nice Day to Work !</p>
+        <h1 class="greeting">Bonjour {{ auth.user.name }}</h1>
+        <p class="sub-greeting">Bonne journée pour le travail !</p>
       </div>
       <div class="header-right">
-        <Link :href="route('profile.edit')" class="user-profile">
+        <Link :href="route('admin.profile.edit')" class="user-profile">
           <div class="user-avatar">
-            <img v-if="user.photo" :src="user.photo" :alt="user.name" class="avatar-image" />
-            <div v-else class="avatar-placeholder">
-              {{ getUserInitials(user.name) }}
+            <div class="avatar-placeholder">
+              {{ getUserInitials(auth.user.name) }}
             </div>
           </div>
-          <span class="user-name">{{ user.name }}</span>
+          <span class="user-name">{{ auth.user.name }}</span>
         </Link>
       </div>
     </header>
@@ -23,8 +22,8 @@
       <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar-header">
-          <div class="app-logo">🎓 GES-ÉTUDIANT</div>
-          <p class="app-subtitle">Admin Panel</p>
+          <div class="app-logo">🎓 GES-ACADEMIQUE-ELEVES</div>
+          <p class="app-subtitle">Panneau d'Administration</p>
         </div>
         
         <nav class="sidebar-nav">
@@ -35,7 +34,13 @@
                 class="nav-link"
                 :class="{ 'active': $page.url === link.href }"
               >
-                <span class="nav-icon">{{ link.icon }}</span>
+                <span class="nav-icon">
+                  <img 
+                    :src="`/icons/${link.icon}`" 
+                    :alt="link.name"
+                    class="nav-png-icon"
+                  />
+                </span>
                 <span class="nav-text">{{ link.name }}</span>
               </Link>
             </li>
@@ -45,7 +50,9 @@
         <!-- Footer du sidebar -->
         <div class="sidebar-footer">
           <Link :href="route('logout')" method="post" as="button" class="logout-btn">
-            <span class="logout-icon">🚪</span>
+            <span class="logout-icon">
+              <img src="/icons/logout.png" alt="Déconnexion">
+            </span>
             <span class="logout-text">Déconnexion</span>
           </Link>
         </div>
@@ -60,39 +67,35 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
 
-// Récupérer l'utilisateur connecté depuis les props
-const props = defineProps({
-  user: {
-    type: Object,
-    default: () => ({
-      name: 'Admin',
-      photo: null
-    })
-  }
-})
+// Récupérer les données de la page
+const page = usePage()
+
+// Utiliser l'utilisateur authentifié depuis les props globaux
+const auth = computed(() => page.props.auth || {})
 
 // Liens de navigation
 const navLinks = [
-  { name: 'Accueil', href: '/admin', icon: '📊' },
-  //{ name: 'Utilisateurs & Rôles', href: '/admin/utilisateurs', icon: '👥' },
-  { name: 'Élèves', href: '/admin/eleves', icon: '👩🏻‍🏫' },
-  { name: 'Enseignants', href: '/admin/enseignants', icon: '👩🏻‍🔬' },
-  { name: 'Filières', href: '/admin/filieres', icon: '🖋️' },
-  { name: 'Niveaux', href: '/admin/niveaux', icon: '📚' },
-  { name: 'Salles', href: '/admin/salles', icon: '🏠' },
-  { name: 'Matières', href: '/admin/matieres', icon: '📖' },
-  { name: 'Inscriptions', href: '/admin/inscriptions', icon: '📇' },
-  { name: 'Années scolaires', href: '/admin/anneesscolaires', icon: '📅' },
-  { name: 'Notes', href: '/admin/notes', icon: '📝' },
-  //{ name: 'Statistiques', href: '/admin/statistiques', icon: '📈' },
-  { name: 'Messages', href: '/admin/messages', icon: '🔔' },
-  //{ name: 'Paramètres', href: '/admin/parametres', icon: '⚙' },
+  { name: 'Accueil', href: '/admin', icon: 'accueil.png' },
+  { name: 'Années scolaires', href: '/admin/anneesscolaires', icon: 'annee.png' },
+  { name: 'Filières', href: '/admin/filieres', icon: 'filiere.png' },
+  { name: 'Niveaux', href: '/admin/niveaux', icon: 'niveau.png' },
+  { name: 'Salles', href: '/admin/salles', icon: 'salle.png' },
+  { name: 'Enseignants', href: '/admin/enseignants', icon: 'enseignant.png' },
+  { name: 'Élèves', href: '/admin/eleves', icon: 'eleve.png' },
+  { name: 'Matières', href: '/admin/matieres', icon: 'matiere.png' },
+  { name: 'Inscriptions', href: '/admin/inscriptions', icon: 'inscription.png' },
+  { name: 'Notes', href: '/admin/notes', icon: 'note.png' },
+  { name: 'Resulats', href: '/admin/resultats', icon: 'resultat.png' },
+  { name: 'Statistiques', href: '/admin/resultats/statistiques', icon: 'statistique.png' },
+  { name: 'Messages', href: '/admin/messages', icon: 'message.png' },  
 ]
 
 // Fonction pour obtenir les initiales de l'utilisateur
 const getUserInitials = (name) => {
+  if (!name) return 'E'
   return name.split(' ').map(n => n[0]).join('').toUpperCase()
 }
 </script>
@@ -100,7 +103,7 @@ const getUserInitials = (name) => {
 <style scoped>
 .admin-layout {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #9ca9e4 0%, #a58dbe 100%);
   padding: 20px;
 }
 
@@ -287,7 +290,11 @@ const getUserInitials = (name) => {
 }
 
 .logout-icon {
-  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
 }
 
 /* Contenu principal */

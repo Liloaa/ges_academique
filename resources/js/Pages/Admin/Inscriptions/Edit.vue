@@ -26,6 +26,13 @@ function update() {
     onError: (err) => console.error('Erreur modification :', err),
   })
 }
+
+function submit() {
+    form.put(route('inscrptions.update', props.anneesscolaire.id), {
+        onSuccess: () => form.reset(),
+        onError: (errors) => console.error('Form errors:', errors),
+    })
+}
 </script>
 
 <template>
@@ -92,8 +99,9 @@ function update() {
         <button
           type="submit"
           class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          :disabled="form.processing"
         >
-          ✅ Mettre à jour
+          {{ form.processing ? 'Mise à jour...' : '✅ Mettre à jour' }}
         </button>
       </div>
     </form>

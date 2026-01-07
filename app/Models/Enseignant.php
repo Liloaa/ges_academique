@@ -36,6 +36,11 @@ class Enseignant extends Model
     {
         return $this->hasMany(Matiere::class);
     }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
     
     protected static function booted()
     {

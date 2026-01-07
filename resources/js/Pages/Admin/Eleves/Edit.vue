@@ -1,19 +1,15 @@
 <script setup>
-import { reactive } from 'vue'
-import { router, Link } from '@inertiajs/vue3'
+import { Head, Link, useForm } from '@inertiajs/vue3'
+import { ref } from 'vue'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 defineOptions({ layout: AdminLayout })
 
 const props = defineProps({
   eleve: Object,
-  filieres: Array,
-  niveaux: Array,
-  salles: Array,
-  annees: Array
 })
 
-const form = reactive({
+const form = useForm({
   matricule: props.eleve.matricule,
   nom: props.eleve.nom,
   prenom: props.eleve.prenom,
@@ -22,38 +18,47 @@ const form = reactive({
   sexe: props.eleve.sexe,
   adresse: props.eleve.adresse,
   telephone: props.eleve.telephone,
-  filiere_id: props.eleve.filiere_id,
-  niveau_id: props.eleve.niveau_id,
-  salle_id: props.eleve.salle_id,
-  annee_scolaire_id: props.eleve.annee_scolaire_id,
   password: '',
   password_confirmation: ''
 })
 
 const submit = () => {
-  router.put(route('eleves.update', props.eleve.id), form, {
-    onSuccess: () => alert('Élève mis à jour avec succès'),
-    onError: (err) => {
-      console.error(err)
-      alert('Erreur: ' + JSON.stringify(err))
-    }
-  })
+  form.put(`/admin/eleves/${props.eleve.id}`)
 }
 </script>
 
 <template>
-  <div class="p-6 max-w-4xl mx-auto bg-white shadow rounded-lg">
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">✏️ Modifier un Élève</h1>
+  <Head title="Modifier un Élève" />
 
-    <form @submit.prevent="submit" class="space-y-5">
+  <div class="p-8 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">✏️ Modifier l'Élève</h1>
+
+    <form @submit.prevent="submit" class="space-y-6">
+      <!-- Informations personnelles -->
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label>Matricule</label>
-          <input v-model="form.matricule" type="text" class="input" required />
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Matricule *
+          </label>
+          <input 
+            v-model="form.matricule" 
+            type="text" 
+            required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <div v-if="form.errors.matricule" class="text-red-600 text-sm mt-1">
+            {{ form.errors.matricule }}
+          </div>
         </div>
+        
         <div>
-          <label>Sexe</label>
-          <select v-model="form.sexe" class="input">
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Sexe
+          </label>
+          <select 
+            v-model="form.sexe" 
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
             <option value="">-- Choisir --</option>
             <option value="Masculin">Masculin</option>
             <option value="Féminin">Féminin</option>
@@ -63,118 +68,133 @@ const submit = () => {
 
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label>Nom</label>
-          <input v-model="form.nom" type="text" class="input" required />
-        </div>
-        <div>
-          <label>Prénom</label>
-          <input v-model="form.prenom" type="text" class="input" required />
-        </div>
-      </div>
-
-      <div>
-        <label>Date de naissance</label>
-        <input v-model="form.date_naissance" type="date" class="input" />
-      </div>
-
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label>Email</label>
-          <input v-model="form.email" type="email" class="input" />
-        </div>
-        <div>
-          <label>Téléphone</label>
-          <input v-model="form.telephone" type="text" class="input" />
-        </div>
-      </div>
-
-      <div>
-        <label>Adresse</label>
-        <input v-model="form.adresse" type="text" class="input" />
-      </div>
-
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label>Filière</label>
-          <select v-model="form.filiere_id" class="input">
-            <option value="">-- Choisir --</option>
-            <option v-for="f in props.filieres" :key="f.id" :value="f.id">
-              {{ f.nomFiliere }}
-            </option>
-          </select>
-        </div>
-        <div>
-          <label>Niveau</label>
-          <select v-model="form.niveau_id" class="input">
-            <option value="">-- Choisir --</option>
-            <option v-for="n in props.niveaux" :key="n.id" :value="n.id">
-              {{ n.nomNiveau }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label>Salle</label>
-          <select v-model="form.salle_id" class="input">
-            <option value="">-- Choisir --</option>
-            <option v-for="s in props.salles" :key="s.id" :value="s.id">
-              {{ s.nomSalle }}
-            </option>
-          </select>
-        </div>
-        <div>
-          <label>Année scolaire</label>
-          <select v-model="form.annee_scolaire_id" class="input">
-            <option value="">-- Choisir --</option>
-            <option v-for="a in props.annees" :key="a.id" :value="a.id">
-              {{ a.libelle }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Mot de passe -->
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label>Mot de passe</label>
-          <input v-model="form.password" type="password" class="input" required />
-        </div>
-        <div>
-          <label>Confirmation</label>
-          <input
-            v-model="form.password_confirmation"
-            type="password"
-            class="input"
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Nom *
+          </label>
+          <input 
+            v-model="form.nom" 
+            type="text" 
             required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Prénom *
+          </label>
+          <input 
+            v-model="form.prenom" 
+            type="text" 
+            required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
       </div>
 
-      <div class="flex justify-between items-center pt-4">
-        <!-- 🔙 Bouton Retour -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Date de naissance
+        </label>
+        <input 
+          v-model="form.date_naissance" 
+          type="date" 
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+
+      <!-- Informations de contact -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Email *
+          </label>
+          <input 
+            v-model="form.email" 
+            type="email" 
+            required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <div v-if="form.errors.email" class="text-red-600 text-sm mt-1">
+            {{ form.errors.email }}
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Téléphone
+          </label>
+          <input 
+            v-model="form.telephone" 
+            type="text" 
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Adresse
+        </label>
+        <textarea 
+          v-model="form.adresse" 
+          rows="3"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        ></textarea>
+      </div>
+
+      <!-- Compte utilisateur -->
+      <div class="border-t pt-4">
+        <h3 class="text-lg font-medium text-gray-800 mb-4">📧 Mise à jour du mot de passe</h3>
+        <p class="text-sm text-gray-600 mb-4">
+          Laissez vide pour conserver le mot de passe actuel
+        </p>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Nouveau mot de passe
+            </label>
+            <input 
+              v-model="form.password" 
+              type="password" 
+              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <div v-if="form.errors.password" class="text-red-600 text-sm mt-1">
+              {{ form.errors.password }}
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Confirmation
+            </label>
+            <input 
+              v-model="form.password_confirmation" 
+              type="password" 
+              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Boutons -->
+      <div class="flex justify-between items-center pt-6">
         <Link
-          href="/admin/eleves/index"
-          class="bg-gray-500 text-white px-4 py-2 rounded shadow hover:bg-gray-600 transition"
+          href="/admin/eleves"
+          class="bg-gray-500 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-600 transition"
         >
           ← Retour
         </Link>
 
-        <!-- ✅ Bouton de mise à jour -->
         <button
           type="submit"
-          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+          :disabled="form.processing"
         >
-          ✅ Mettre à jour
+          {{ form.processing ? 'Mise à jour...' : '✅ Mettre à jour' }}
         </button>
       </div>
     </form>
   </div>
 </template>
-
-<style scoped>
-.input {
-  @apply w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-200;
-}
-</style>

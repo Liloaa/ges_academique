@@ -4,23 +4,21 @@ import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 defineOptions({ layout: AdminLayout })
 
-defineProps({
+const props = defineProps({  // Stocker dans une variable props
   matiere: Object,
-  filieres: Array,
   niveaux: Array,
   enseignants: Array,
 })
 
 const form = useForm({
-  nomMatiere: props.matiere.nomMatiere,
+  nomMatiere: props.matiere.nomMatiere,  // Utiliser props.matiere
   coefficient: props.matiere.coefficient,
-  filiere_id: props.matiere.filiere_id || '',
   niveau_id: props.matiere.niveau_id || '',
   enseignant_id: props.matiere.enseignant_id || '',
 })
 
 function submit() {
-  form.put(route('matieres.update', props.matiere.id))
+  form.put(route('matieres.update', props.matiere.id))  // Utiliser props.matiere
 }
 </script>
 
@@ -46,14 +44,6 @@ function submit() {
       </div>
 
       <div>
-        <label>Filière</label>
-        <select v-model="form.filiere_id" class="w-full border rounded p-2">
-          <option value="">-- Choisir --</option>
-          <option v-for="f in filieres" :key="f.id" :value="f.id">{{ f.nomFiliere }}</option>
-        </select>
-      </div>
-
-      <div>
         <label>Niveau</label>
         <select v-model="form.niveau_id" class="w-full border rounded p-2">
           <option value="">-- Choisir --</option>
@@ -73,7 +63,13 @@ function submit() {
 
       <div class="flex justify-between">
         <Link :href="route('matieres.index')" class="text-gray-600">← Retour</Link>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded">Mettre à jour</button>
+        <button 
+          type="submit" 
+          class="bg-blue-600 text-white px-4 py-2 rounded" 
+          :disabled="form.processing"
+        >
+          {{ form.processing ? 'Mise à jour...' : '✅ Mettre à jour' }}
+        </button>
       </div>
     </form>
   </div>

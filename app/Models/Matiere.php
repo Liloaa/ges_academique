@@ -12,7 +12,6 @@ class Matiere extends Model
     protected $fillable = [
         'nomMatiere',
         'coefficient',
-        'filiere_id',
         'niveau_id',
         'enseignant_id',
     ];

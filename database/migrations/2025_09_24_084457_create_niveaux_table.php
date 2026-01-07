@@ -13,14 +13,19 @@ return new class extends Migration
     {
         Schema::create('niveaux', function (Blueprint $table) {
             $table->id();
-            $table->unique(['nomNiveau', 'section']);
+            $table->string('nomNiveau', 100)->unique();   // ex: 11ème A, 2nde S B
             $table->text('description')->nullable();
-            $table->enum('section', ['primaire', 'college', 'lycee']);
 
-            $table->foreignId('filiere_id')->nullable()->constrained()->nullOnDelete();
+            $table->enum('cycle', ['primaire', 'college', 'lycee']);
 
-            $table->timestamps();           // created_at et updated_at
+            $table->foreignId('filiere_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+
+            $table->timestamps();
         });
+
     }
 
     /**

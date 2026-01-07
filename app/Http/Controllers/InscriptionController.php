@@ -6,32 +6,38 @@ use App\Models\Inscription;
 use App\Models\Eleve;
 use App\Models\Salle;
 use App\Models\AnneeScolaire;
+use App\Models\Niveau;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class InscriptionController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $annee_id = $request->get('annee_scolaire_id');
-        $salle_id = $request->get('salle_id');
-        $etat = $request->get('etat');
+        // Récupérer les inscriptions groupées par cycle via la salle->niveau
+        $inscriptions = Inscription::with([
+            'eleve', 
+            'salle.niveau.filiere', 
+            'annee'
+        ])
+        ->whereHas('salle.niveau')
+        ->orderBy('date_inscription', 'desc')
+        ->get();
 
-        $inscriptions = Inscription::with(['eleve', 'salle', 'annee'])
-            ->when($annee_id, fn($q) => $q->where('annee_scolaire_id', $annee_id))
-            ->when($salle_id, fn($q) => $q->where('salle_id', $salle_id))
-            ->when($etat, fn($q) => $q->where('etat', $etat))
-            ->orderBy('date_inscription', 'desc')
-            ->get();
+        // Grouper par cycle
+        $grouped = $inscriptions->groupBy(function ($inscription) {
+            return $inscription->salle->niveau->cycle;
+        });
 
-        $filtre = [
-            'annees' => AnneeScolaire::all(),
-            'salles' => Salle::all(),
-        ];
+        $cycles = ['primaire', 'college', 'lycee'];
+        $inscriptionsGroupes = [];
+
+        foreach ($cycles as $cycle) {
+            $inscriptionsGroupes[$cycle] = $grouped->get($cycle, []);
+        }
 
         return Inertia::render('Admin/Inscriptions/Index', [
-            'inscriptions' => $inscriptions,
-            'filtre' => $filtre,
+            'inscriptionsGroupes' => $inscriptionsGroupes,
         ]);
     }
 
@@ -39,7 +45,7 @@ class InscriptionController extends Controller
     {
         return Inertia::render('Admin/Inscriptions/Create', [
             'eleves' => Eleve::orderBy('nom')->get(),
-            'salles' => Salle::orderBy('nomSalle')->get(),
+            'salles' => Salle::with('niveau')->orderBy('nomSalle')->get(),
             'annees' => AnneeScolaire::orderBy('libelle')->get(),
         ]);
     }
@@ -56,7 +62,7 @@ class InscriptionController extends Controller
             'eleve_id.required' => 'Le champ élève est obligatoire.',
             'salle_id.required' => 'Le champ salle est obligatoire.',
             'annee_scolaire_id.required' => 'Le champ année scolaire est obligatoire.',
-            'date_inscription.required' => 'La date d’inscription est obligatoire.',
+            'date_inscription.required' => 'La date d inscription est obligatoire.',
             'etat.required' => 'Le champ état est obligatoire.',
         ]);
 
@@ -69,9 +75,9 @@ class InscriptionController extends Controller
     public function edit(Inscription $inscription)
     {
         return Inertia::render('Admin/Inscriptions/Edit', [
-            'inscription' => $inscription->load(['eleve', 'salle', 'annee']),
+            'inscription' => $inscription->load(['eleve', 'salle.niveau', 'annee']),
             'eleves' => Eleve::all(),
-            'salles' => Salle::all(),
+            'salles' => Salle::with('niveau')->get(),
             'annees' => AnneeScolaire::all(),
         ]);
     }
@@ -96,14 +102,15 @@ class InscriptionController extends Controller
         return back()->with('success', 'Inscription supprimée.');
     }
 
-    // Historique des inscriptions d’un élève 
+    // Historique des inscriptions d'un élève 
     public function historique($id)
     {
-        $eleve = Eleve::with(['inscriptions.salle', 'inscriptions.annee'])
+        $eleve = Eleve::with(['inscriptions.salle.niveau', 'inscriptions.annee'])
             ->findOrFail($id);
 
         return Inertia::render('Admin/Eleves/Historique', [
-            'eleve' => $eleve
+            'eleve' => $eleve,
+            'inscriptions' => $eleve->inscriptions
         ]);
     }
 }

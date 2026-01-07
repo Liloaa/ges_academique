@@ -13,14 +13,15 @@ return new class extends Migration {
             $table->float('coefficient')->default(1);
 
             // Relations
-            $table->unsignedBigInteger('filiere_id')->nullable();
-            $table->unsignedBigInteger('niveau_id')->nullable();
-            $table->unsignedBigInteger('enseignant_id')->nullable();
+            $table->foreignId('niveau_id')
+                  ->nullable()
+                  ->constrained('niveaux')
+                  ->nullOnDelete();
 
-            // Clés étrangères
-            $table->foreign('filiere_id')->references('id')->on('filieres')->onDelete('set null');
-            $table->foreign('niveau_id')->references('id')->on('niveaux')->onDelete('set null');
-            $table->foreign('enseignant_id')->references('id')->on('enseignants')->onDelete('set null');
+             $table->foreignId('enseignant_id')
+                  ->nullable()
+                  ->constrained('enseignants')
+                  ->nullOnDelete();
 
             $table->timestamps();
         });

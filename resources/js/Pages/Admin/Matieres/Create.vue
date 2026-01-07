@@ -4,12 +4,11 @@ import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 defineOptions({ layout: AdminLayout })
 
-defineProps({ filieres: Array, niveaux: Array, enseignants: Array })
+defineProps({ niveaux: Array, enseignants: Array })
 
 const form = useForm({
   nomMatiere: '',
   coefficient: 1,
-  filiere_id: '',
   niveau_id: '',
   enseignant_id: '',
 })
@@ -35,14 +34,6 @@ function submit() {
       </div>
 
       <div>
-        <label>Filière</label>
-        <select v-model="form.filiere_id" class="w-full border rounded p-2">
-          <option value="">Choisir...</option>
-          <option v-for="f in filieres" :key="f.id" :value="f.id">{{ f.nomFiliere }}</option>
-        </select>
-      </div>
-
-      <div>
         <label>Niveau</label>
         <select v-model="form.niveau_id" class="w-full border rounded p-2">
           <option value="">-- Choisir --</option>
@@ -60,7 +51,13 @@ function submit() {
 
       <div class="flex justify-between">
         <Link :href="route('matieres.index')" class="bg-gray-500 text-white px-4 py-2 rounded shadow hover:bg-gray-600 transition">← Retour</Link>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Enregistrer</button>
+        <button 
+          type="submit"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" 
+          :disabled="form.processing"
+        >
+          {{ form.processing ? 'Création...' : '💾 Créer la matiere' }}
+        </button>
       </div>
     </form>
   </div>

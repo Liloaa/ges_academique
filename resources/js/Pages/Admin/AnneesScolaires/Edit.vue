@@ -51,7 +51,7 @@ function submit() {
                     class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                     :disabled="form.processing"
                 >
-                    ✅ Mettre à jour
+                    {{ form.processing ? 'Mise à jour...' : '✅ Mettre à jour' }}
                 </button>
             </div>
         </form>

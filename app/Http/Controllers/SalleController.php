@@ -11,7 +11,7 @@ class SalleController extends Controller
 {
     public function index()
     {
-        $salles = Salle::with('niveau')
+        $salles = Salle::with(['niveau', 'niveau.filiere'])
             ->orderBy('id', 'desc')
             ->get();
 
@@ -22,17 +22,23 @@ class SalleController extends Controller
 
     public function create()
     {
+        // Récupérer seulement les niveaux qui n'ont pas encore de salle
+        $niveauxSansSalle = Niveau::whereDoesntHave('salles')->get();
+
         return Inertia::render('Admin/Salles/Create', [
-            'niveaux' => Niveau::all(),
+            'niveaux' => $niveauxSansSalle,
         ]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nomSalle' => 'required|string|max:50',
+            'nomSalle' => 'required|string|max:50|unique:salles,nomSalle',
             'capacite' => 'required|integer|min:1',
-            'niveau_id' => 'nullable|exists:niveaux,id',
+            'niveau_id' => 'required|exists:niveaux,id|unique:salles,niveau_id',
+        ], [
+            'niveau_id.unique' => 'Ce niveau a déjà une salle attribuée.',
+            'nomSalle.unique' => 'Cette salle existe déjà.',
         ]);
 
         Salle::create($validated);
@@ -43,18 +49,26 @@ class SalleController extends Controller
 
     public function edit(Salle $salle)
     {
+        // Récupérer les niveaux sans salle + le niveau actuel de cette salle
+        $niveauxSansSalle = Niveau::whereDoesntHave('salles')
+            ->orWhere('id', $salle->niveau_id)
+            ->get();
+
         return Inertia::render('Admin/Salles/Edit', [
             'salle' => $salle,
-            'niveaux' => Niveau::all(),
+            'niveaux' => $niveauxSansSalle,
         ]);
     }
 
     public function update(Request $request, Salle $salle)
     {
         $validated = $request->validate([
-            'nomSalle' => 'required|string|max:50',
+            'nomSalle' => 'required|string|max:50|unique:salles,nomSalle,' . $salle->id,
             'capacite' => 'required|integer|min:1',
-            'niveau_id' => 'nullable|exists:niveaux,id',
+            'niveau_id' => 'required|exists:niveaux,id|unique:salles,niveau_id,' . $salle->id,
+        ], [
+            'niveau_id.unique' => 'Ce niveau a déjà une salle attribuée.',
+            'nomSalle.unique' => 'Cette salle existe déjà.',
         ]);
 
         $salle->update($validated);

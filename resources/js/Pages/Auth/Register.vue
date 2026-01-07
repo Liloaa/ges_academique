@@ -12,7 +12,7 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
-    role: 'eleve',
+    role: 'admin',
     code_secret: '',
 });
 
@@ -50,7 +50,7 @@ const submit = () => {
 
                 <div class="welcome-message">
                     <h2>Créer un compte</h2>
-                    <h3>Rejoignez notre plateforme</h3>
+                    <h3>Bienvenu pour créer votre compte Administrateur</h3>
                 </div>
 
                 <form @submit.prevent="submit" class="login-form">
@@ -139,17 +139,15 @@ const submit = () => {
                             id="role" 
                             v-model="form.role"
                             class="text-input"
-                            required
+                            disabled
                         >
-                            <option value="eleve">Élève</option>
-                            <option value="enseignant">Enseignant</option>
                             <option value="admin">Administrateur</option>
                         </select>
                         <InputError class="input-error" :message="form.errors.role" />
                     </div>
 
                     <!-- Code secret (conditionnel) -->
-                    <div v-if="form.role === 'admin' || form.role === 'enseignant'" class="input-group">
+                    <div class="input-group">
                         <label for="code_secret" class="input-label">Code secret</label>
                         <input
                             id="code_secret"

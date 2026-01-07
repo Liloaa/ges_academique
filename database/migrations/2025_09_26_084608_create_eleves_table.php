@@ -23,10 +23,11 @@ return new class extends Migration
             $table->string('telephone', 20)->nullable();                // téléphone nullable
 
             // relations
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreignId('user_id')
+                  ->nullable()
+                  ->constrained('users')
+                  ->nullOnDelete();
 
-            // clés étrangères
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
 
             $table->timestamps();
         });

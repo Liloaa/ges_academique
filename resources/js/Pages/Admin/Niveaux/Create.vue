@@ -3,9 +3,17 @@ import { Head, Link, useForm } from '@inertiajs/vue3'
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 defineOptions({ layout: AdminLayout })
+
+// Ajoutez defineProps pour recevoir les filières
+const props = defineProps({
+  filieres: Array
+})
+
 const form = useForm({
   nomNiveau: '',
   description: '',
+  cycle: 'primaire',
+  filiere_id: null,
 })
 
 const submit = () => {
@@ -22,12 +30,14 @@ const submit = () => {
     <form @submit.prevent="submit" class="space-y-5">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">
-          Nom du Niveau
+          Nom du Niveau *
         </label>
         <input
           type="text"
           v-model="form.nomNiveau"
+          required
           class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300"
+          placeholder="Ex: 11ème A, 2nde S B..."
         />
         <div v-if="form.errors.nomNiveau" class="text-red-600 text-sm mt-1">
           {{ form.errors.nomNiveau }}
@@ -41,7 +51,46 @@ const submit = () => {
         <textarea
           v-model="form.description"
           class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300"
+          placeholder="Description optionnelle..."
         ></textarea>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Cycle *
+        </label>
+        <select
+          v-model="form.cycle"
+          required
+          class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300"
+        >
+          <option value="primaire">Primaire</option>
+          <option value="college">Collège</option>
+          <option value="lycee">Lycée</option>
+        </select>
+        <div v-if="form.errors.cycle" class="text-red-600 text-sm mt-1">
+          {{ form.errors.cycle }}
+        </div>
+      </div>
+
+      <!-- Correction : utilisez props.filieres au lieu de $page.props.filieres -->
+      <div v-if="form.cycle === 'lycee'">
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Filière *
+        </label>
+        <select
+          v-model="form.filiere_id"
+          :required="form.cycle === 'lycee'"
+          class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300"
+        >
+          <option value="">Sélectionnez une filière</option>
+          <option v-for="filiere in filieres" :key="filiere.id" :value="filiere.id">
+            {{ filiere.nomFiliere }}
+          </option>
+        </select>
+        <div v-if="form.errors.filiere_id" class="text-red-600 text-sm mt-1">
+          {{ form.errors.filiere_id }}
+        </div>
       </div>
 
       <div class="flex justify-between items-center pt-2">
@@ -54,7 +103,7 @@ const submit = () => {
           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
           :disabled="form.processing"
         >
-          Enregistrer
+          {{ form.processing ? 'Enregistrement...' : '💾Enregistrer le niveau' }}
         </button>
       </div>
     </form>

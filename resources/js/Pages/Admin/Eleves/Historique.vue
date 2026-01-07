@@ -50,10 +50,6 @@ function telechargerPDF() {
     <!-- Informations élève -->
     <div class="bg-white p-4 rounded-lg shadow space-y-2">
       <p><strong>Matricule :</strong> {{ eleve.matricule }}</p>
-      <p><strong>Filière :</strong> {{ eleve.filiere?.nomFiliere || '—' }}</p>
-      <p><strong>Niveau :</strong> {{ eleve.niveau?.nomNiveau || '—' }}</p>
-      <p><strong>Salle actuelle :</strong> {{ eleve.salle?.nomSalle || '—' }}</p>
-      <p><strong>Année actuelle :</strong> {{ eleve.annee?.libelle || '—' }}</p>
     </div>
 
     <!-- Historique des inscriptions -->

@@ -40,8 +40,9 @@ const confirmDelete = (id) => {
             <th class="px-6 py-3">Capacité</th>
             <th class="px-6 py-3">Effectif</th>
             <th class="px-6 py-3">Taux de remplissage</th>
-            <th class="px-6 py-3">Filière</th>
             <th class="px-6 py-3">Niveau</th>
+            <th class="px-6 py-3">Cycle</th>
+            <th class="px-6 py-3">Filière</th>
             <th class="px-6 py-3 text-center">Actions</th>
           </tr>
         </thead>
@@ -61,37 +62,52 @@ const confirmDelete = (id) => {
               <div class="flex items-center justify-center gap-2">
                 <div class="w-24 bg-gray-200 rounded-full h-2">
                   <div
-                    class="bg-blue-600 h-2 rounded-full"
+                    class="h-2 rounded-full transition-all"
+                    :class="{
+                      'bg-green-500': (salle.taux_remplissage || 0) <= 70,
+                      'bg-yellow-500': (salle.taux_remplissage || 0) > 70 && (salle.taux_remplissage || 0) < 90,
+                      'bg-red-500': (salle.taux_remplissage || 0) >= 90
+                    }"
                     :style="{ width: (salle.taux_remplissage || 0) + '%' }"
                   ></div>
                 </div>
-                <span>{{ salle.taux_remplissage ?? 0 }}%</span>
+                <span class="text-sm">{{ salle.taux_remplissage ?? 0 }}%</span>
               </div>
             </td>
 
-            <td class="px-6 py-3">{{ salle.filiere?.nomFiliere || '—' }}</td>
             <td class="px-6 py-3">{{ salle.niveau?.nomNiveau || '—' }}</td>
+            <td class="px-6 py-3">
+              <span class="px-2 py-1 text-xs rounded-full" 
+                :class="{
+                  'bg-blue-100 text-blue-800': salle.niveau?.cycle === 'primaire',
+                  'bg-green-100 text-green-800': salle.niveau?.cycle === 'college',
+                  'bg-purple-100 text-purple-800': salle.niveau?.cycle === 'lycee'
+                }">
+                {{ salle.niveau?.cycle || '—' }}
+              </span>
+            </td>
+            <td class="px-6 py-3">{{ salle.niveau?.filiere?.nomFiliere || '—' }}</td>
 
             <!-- Actions -->
             <td class="px-6 py-3 text-center">
               <Link
                 :href="`/admin/salles/${salle.id}/edit`"
-                class="text-blue-600 hover:underline mr-3"
+                class="text-blue-600 hover:text-blue-800 font-medium"
               >
-                ✏️ Modifier
+                🖋️ Modifier
               </Link>
               <button
                 @click="confirmDelete(salle.id)"
-                class="text-red-600 hover:underline"
+                class="text-red-600 hover:text-red-800 font-medium"
               >
-                🗑️ Supprimer
+                ❌ Supprimer
               </button>
             </td>
           </tr>
 
           <!-- Aucun résultat -->
           <tr v-if="salles.length === 0">
-            <td colspan="8" class="text-center text-gray-500 py-6">
+            <td colspan="9" class="text-center text-gray-500 py-6">
               Aucune salle enregistrée.
             </td>
           </tr>

@@ -1,6 +1,5 @@
 <script setup>
-import { Head, Link, router } from '@inertiajs/vue3'
-import { reactive, ref } from 'vue'
+import { useForm, Link } from '@inertiajs/vue3' // Importez useForm
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 defineOptions({ layout: AdminLayout })
@@ -11,7 +10,8 @@ const props = defineProps({
   annees: Array,
 })
 
-const form = reactive({
+// Utilisez useForm au lieu de reactive pour gérer les erreurs automatiquement
+const form = useForm({
   eleve_id: '',
   salle_id: '',
   annee_scolaire_id: '',
@@ -19,29 +19,15 @@ const form = reactive({
   etat: 'active',
 })
 
-// Objet pour stocker les erreurs côté client
-const errors = reactive({
-  eleve_id: '',
-  salle_id: '',
-  annee_scolaire_id: '',
-  date_inscription: '',
-  etat: '',
-})
-
 function submit() {
-  // On réinitialise les erreurs avant la soumission
-  Object.keys(errors).forEach((key) => (errors[key] = ''))
-
-  router.post(route('inscriptions.store'), form, {
-    onError: (e) => {
-      Object.keys(e).forEach((key) => {
-        if (errors[key] !== undefined) {
-          // Si c’est un tableau, on prend le premier message, sinon on prend directement la chaîne
-          errors[key] = Array.isArray(e[key]) ? e[key][0] : e[key];
-        }
-      });
+  form.post(route('inscriptions.store'), {
+    onSuccess: () => {
+      // Redirection après succès (optionnel)
+      form.reset()
     },
-    onSuccess: () => router.visit(route('inscriptions.index')),
+    onError: (errors) => {
+      console.log('Erreurs:', errors)
+    }
   })
 }
 </script>
@@ -56,48 +42,50 @@ function submit() {
       <!-- Élève -->
       <div>
         <label class="block mb-1">Élève :</label>
-        <select v-model="form.eleve_id" class="w-full border rounded p-2">
+        <select v-model="form.eleve_id" class="w-full border rounded p-2" :class="{ 'border-red-500': form.errors.eleve_id }">
           <option value="">-- Sélectionner un élève --</option>
-          <option v-for="e in props.eleves" :key="e.id" :value="e.id">
+          <option v-for="e in eleves" :key="e.id" :value="e.id">
             {{ e.nom }} {{ e.prenom }}
           </option>
         </select>
-        <p v-if="errors.eleve_id" class="text-red-600 text-sm mt-1">{{ errors.eleve_id }}</p>
+        <p v-if="form.errors.eleve_id" class="text-red-600 text-sm mt-1">{{ form.errors.eleve_id }}</p>
       </div>
 
       <!-- Salle -->
       <div>
         <label class="block mb-1">Salle :</label>
-        <select v-model="form.salle_id" class="w-full border rounded p-2">
+        <select v-model="form.salle_id" class="w-full border rounded p-2" :class="{ 'border-red-500': form.errors.salle_id }">
           <option value="">-- Sélectionner une salle --</option>
-          <option v-for="s in props.salles" :key="s.id" :value="s.id">
+          <option v-for="s in salles" :key="s.id" :value="s.id">
             {{ s.nomSalle }}
           </option>
         </select>
-        <p v-if="errors.salle_id" class="text-red-600 text-sm mt-1">{{ errors.salle_id }}</p>
+        <p v-if="form.errors.salle_id" class="text-red-600 text-sm mt-1">{{ form.errors.salle_id }}</p>
       </div>
 
       <!-- Année scolaire -->
       <div>
         <label class="block mb-1">Année scolaire :</label>
-        <select v-model="form.annee_scolaire_id" class="w-full border rounded p-2">
+        <select v-model="form.annee_scolaire_id" class="w-full border rounded p-2" :class="{ 'border-red-500': form.errors.annee_scolaire_id }">
           <option value="">-- Sélectionner une année --</option>
-          <option v-for="a in props.annees" :key="a.id" :value="a.id">
+          <option v-for="a in annees" :key="a.id" :value="a.id">
             {{ a.libelle }}
           </option>
         </select>
-        <p v-if="errors.annee_scolaire_id" class="text-red-600 text-sm mt-1">{{ errors.annee_scolaire_id }}</p>
+        <p v-if="form.errors.annee_scolaire_id" class="text-red-600 text-sm mt-1">{{ form.errors.annee_scolaire_id }}</p>
       </div>
 
       <!-- Date inscription -->
       <div>
-        <label class="block mb-1">Date d’inscription :</label>
+        <label class="block mb-1">Date d'inscription :</label>
         <input
           type="date"
           v-model="form.date_inscription"
           class="w-full border rounded p-2"
+          :class="{ 'border-red-500': form.errors.date_inscription }"
+          required
         />
-        <p v-if="errors.date_inscription" class="text-red-600 text-sm mt-1">{{ errors.date_inscription }}</p>
+        <p v-if="form.errors.date_inscription" class="text-red-600 text-sm mt-1">{{ form.errors.date_inscription }}</p>
       </div>
 
       <!-- État -->
@@ -107,13 +95,21 @@ function submit() {
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
         </select>
-        <p v-if="errors.etat" class="text-red-600 text-sm mt-1">{{ errors.etat }}</p>
+        <p v-if="form.errors.etat" class="text-red-600 text-sm mt-1">{{ form.errors.etat }}</p>
+      </div>
+
+      <!-- Messages d'erreur généraux -->
+      <div v-if="form.hasErrors" class="bg-red-50 border border-red-200 text-red-700 p-3 rounded">
+        <p class="font-semibold">Veuillez corriger les erreurs ci-dessous :</p>
+        <ul v-if="Object.keys(form.errors).length > 1" class="list-disc ml-4 mt-1">
+          <li v-for="(error, field) in form.errors" :key="field">{{ error }}</li>
+        </ul>
       </div>
 
       <!-- Boutons -->
       <div class="flex justify-between items-center pt-4">
         <Link
-          href="/admin/inscriptions"
+          :href="route('inscriptions.index')"
           class="bg-gray-500 text-white px-4 py-2 rounded shadow hover:bg-gray-600 transition"
         >
           ← Retour
@@ -121,9 +117,10 @@ function submit() {
 
         <button
           type="submit"
-          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+          :disabled="form.processing"
         >
-          💾 Enregistrer
+          {{ form.processing ? 'Enregistrement...' : '💾 Enregistrer' }}
         </button>
       </div>
     </form>

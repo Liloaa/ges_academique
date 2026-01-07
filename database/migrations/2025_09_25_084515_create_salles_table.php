@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nomSalle', 50);           // Nom de la salle
             $table->integer('capacite');              // Capacité max
-            $table->unsignedBigInteger('niveau_id')->nullable();  // Relation avec niveau
+            $table->unsignedBigInteger('niveau_id')->nullable()->unique();  // Relation avec niveau
 
             // Contraintes de clé étrangère
             $table->foreign('niveau_id')->references('id')->on('niveaux')->onDelete('set null');

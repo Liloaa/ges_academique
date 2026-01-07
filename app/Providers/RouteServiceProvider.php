@@ -11,14 +11,15 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * Le chemin vers le "home" de ton application.
+     * Le chemin vers le "home" de l'application.
      *
      * Typiquement, les utilisateurs authentifiés seront redirigés ici.
+     * Utiliser notre route personnalisée '/home' pour gérer la redirection.
      */
-    public const HOME = '/dashboard';
+    public const HOME = '/home'; // ← CHANGEZ DE '/dashboard' À '/home'
 
     /**
-     * Définit les routes de ton application.
+     * Définit les routes de l'application.
      */
     public function boot(): void
     {

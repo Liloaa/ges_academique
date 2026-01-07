@@ -12,6 +12,7 @@ class Inscription extends Model
     protected $fillable = [
         'eleve_id',
         'salle_id',
+        'niveau_id',
         'annee_scolaire_id',
         'date_inscription',
         'etat',
@@ -22,13 +23,19 @@ class Inscription extends Model
         return $this->belongsTo(Eleve::class);
     }
 
-    public function niveau() {
+    public function niveau()
+    {
         return $this->belongsTo(Niveau::class);
     }
 
     public function salle()
     {
         return $this->belongsTo(Salle::class);
+    }
+
+    public function anneeScolaire()
+    {
+        return $this->belongsTo(AnneeScolaire::class, 'annee_scolaire_id');
     }
 
     public function annee()

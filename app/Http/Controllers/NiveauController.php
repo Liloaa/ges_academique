@@ -11,10 +11,22 @@ class NiveauController extends Controller
 {
     public function index()
     {
-        $niveaux = Niveau::with('filiere')->orderBy('id', 'desc')->get();
+        $niveaux = Niveau::with('filiere')
+            ->orderBy('cycle')
+            ->orderBy('nomNiveau')
+            ->get()
+            ->groupBy('cycle')
+            ->toArray();
+
+        $cycles = ['primaire', 'college', 'lycee'];
+        $niveauxGroupes = [];
+
+        foreach ($cycles as $cycle) {
+            $niveauxGroupes[$cycle] = $niveaux[$cycle] ?? [];
+        }
 
         return Inertia::render('Admin/Niveaux/Index', [
-            'niveaux' => $niveaux
+            'niveauxGroupes' => $niveauxGroupes
         ]);
     }
 
@@ -30,7 +42,7 @@ class NiveauController extends Controller
         $validated = $request->validate([
             'nomNiveau' => 'required|string|max:100|unique:niveaux,nomNiveau',
             'description' => 'nullable|string',
-            'section' => 'required|in:primaire,college,lycee',
+            'cycle' => 'required|in:primaire,college,lycee',
             'filiere_id' => 'nullable|exists:filieres,id',
         ]);
 
@@ -53,7 +65,7 @@ class NiveauController extends Controller
         $validated = $request->validate([
             'nomNiveau' => 'required|string|max:100|unique:niveaux,nomNiveau,' . $niveau->id,
             'description' => 'nullable|string',
-            'section' => 'required|in:primaire,college,lycee',
+            'cycle' => 'required|in:primaire,college,lycee',
             'filiere_id' => 'nullable|exists:filieres,id',
         ]);
 

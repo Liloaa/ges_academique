@@ -3,14 +3,39 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Message extends Model
 {
-    public function sender() {
-        return $this->belongsTo(User::class, 'sender_id');
+    use HasFactory;
+
+    protected $fillable = [
+        'sujet',
+        'contenu',
+        'date_envoi',
+        'lu',
+        'expediteur_id',
+        'destinataire_id',
+        'annee_scolaire_id',
+    ];
+
+    protected $casts = [
+        'date_envoi' => 'datetime',
+        'lu' => 'boolean',
+    ];
+
+    public function expediteur()
+    {
+        return $this->belongsTo(User::class, 'expediteur_id');
     }
 
-    public function receiver() {
-        return $this->belongsTo(User::class, 'receiver_id');
+    public function destinataire()
+    {
+        return $this->belongsTo(User::class, 'destinataire_id');
+    }
+
+    public function anneeScolaire()
+    {
+        return $this->belongsTo(AnneeScolaire::class, 'annee_scolaire_id');
     }
 }
