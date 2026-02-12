@@ -8,6 +8,7 @@ use App\Models\Enseignant;
 use App\Models\AnneeScolaire;
 use App\Models\Inscription;
 use App\Models\Salle;
+use App\Models\Note;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -22,7 +23,10 @@ class EnseignantDashboardController extends Controller
         if (!$enseignant) {
             return Inertia::render('Enseignant/Index', [
                 'classes' => [],
-                'statistiques' => []
+                'statistiques' => [],
+                'matieres' => [],
+                'salles' => [],
+                'enseignant' => null
             ]);
         }
         
@@ -38,11 +42,25 @@ class EnseignantDashboardController extends Controller
         // 3. Prochaines évaluations (si vous avez ce modèle)
         $prochainesEvaluations = $this->getProchainesEvaluations($enseignant->id);
         
+        // 4. Matières enseignées
+        $matieres = $this->getMatieresEnseignees($enseignant->id);
+        
+        // 5. Salles avec matières enseignées
+        $salles = $this->getSallesAvecMatieres($enseignant->id, $anneeActive ? $anneeActive->id : null);
+        
         return Inertia::render('Enseignant/Index', [
             'classes' => $classes,
             'statistiques' => $statistiques,
             'prochainesEvaluations' => $prochainesEvaluations,
-            'enseignant' => $enseignant,
+            'enseignant' => [
+                'id' => $enseignant->id,
+                'nom' => $enseignant->nom,
+                'prenom' => $enseignant->prenom,
+                'specialite' => $enseignant->specialite,
+            ],
+            'matieres' => $matieres,
+            'salles' => $salles,
+            'anneeActive' => $anneeActive,
         ]);
     }
     
@@ -150,12 +168,6 @@ class EnseignantDashboardController extends Controller
         
         $statistiques['totalNiveaux'] = $niveauxIds;
         
-        // Moyenne des notes données (si vous avez un modèle Note)
-        $moyenneNotes = 0;
-        // À implémenter si vous avez accès aux notes
-        
-        $statistiques['moyenneNotes'] = $moyenneNotes;
-        
         return $statistiques;
     }
     
@@ -166,5 +178,95 @@ class EnseignantDashboardController extends Controller
     {
         // À implémenter selon votre modèle d'évaluations
         return [];
+    }
+    
+    /**
+     * Récupérer les matières enseignées
+     */
+    private function getMatieresEnseignees($enseignantId)
+    {
+        $matieres = Matiere::where('enseignant_id', $enseignantId)
+            ->with('niveau.filiere')
+            ->get()
+            ->map(function ($matiere) {
+                return [
+                    'id' => $matiere->id,
+                    'nomMatiere' => $matiere->nomMatiere,
+                    'coefficient' => $matiere->coefficient,
+                    'niveau' => $matiere->niveau ? [
+                        'id' => $matiere->niveau->id,
+                        'nom' => $matiere->niveau->nomNiveau,
+                        'cycle' => $matiere->niveau->cycle,
+                        'filiere' => $matiere->niveau->filiere ? [
+                            'nom' => $matiere->niveau->filiere->nomFiliere
+                        ] : null,
+                    ] : null,
+                ];
+            });
+        
+        return $matieres;
+    }
+    
+    /**
+     * Récupérer les salles avec matières enseignées
+     */
+    private function getSallesAvecMatieres($enseignantId, $anneeActiveId)
+    {
+        // Récupérer toutes les matières de l'enseignant avec leurs niveaux
+        $matieres = Matiere::where('enseignant_id', $enseignantId)
+            ->with(['niveau.salles'])
+            ->get();
+        
+        $sallesData = [];
+        
+        foreach ($matieres as $matiere) {
+            if (!$matiere->niveau) continue;
+            
+            foreach ($matiere->niveau->salles as $salle) {
+                $salleId = $salle->id;
+                
+                if (!isset($sallesData[$salleId])) {
+                    // Calculer l'effectif
+                    $effectif = 0;
+                    if ($anneeActiveId) {
+                        $effectif = Inscription::where('salle_id', $salleId)
+                            ->where('annee_scolaire_id', $anneeActiveId)
+                            ->where('etat', 'active')
+                            ->count();
+                    }
+                    
+                    $sallesData[$salleId] = [
+                        'id' => $salle->id,
+                        'nomSalle' => $salle->nomSalle,
+                        'effectif' => $effectif,
+                        'capacite' => $salle->capacite,
+                        'niveau' => [
+                            'id' => $matiere->niveau->id,
+                            'nom' => $matiere->niveau->nomNiveau,
+                            'cycle' => $matiere->niveau->cycle,
+                            'filiere' => $matiere->niveau->filiere ? [
+                                'nom' => $matiere->niveau->filiere->nomFiliere
+                            ] : null,
+                        ],
+                        'matieres_enseignees' => [],
+                    ];
+                }
+                
+                // Ajouter la matière à la salle si elle n'y est pas déjà
+                $matiereExistante = collect($sallesData[$salleId]['matieres_enseignees'])
+                    ->where('id', $matiere->id)
+                    ->first();
+                
+                if (!$matiereExistante) {
+                    $sallesData[$salleId]['matieres_enseignees'][] = [
+                        'id' => $matiere->id,
+                        'nomMatiere' => $matiere->nomMatiere,
+                        'coefficient' => $matiere->coefficient,
+                    ];
+                }
+            }
+        }
+        
+        return array_values($sallesData);
     }
 }

@@ -26,7 +26,9 @@ class EleveDashboardController extends Controller
         if (!$eleve) {
             return Inertia::render('Eleve/Index', [
                 'error' => 'Aucun profil élève trouvé pour votre compte.',
-                'dashboardData' => null
+                'dashboardData' => null,
+                'resultats' => null,
+                'moyenneGenerale' => 0
             ]);
         }
         
@@ -34,7 +36,7 @@ class EleveDashboardController extends Controller
         $anneeActive = AnneeScolaire::where('active', true)->first();
         
         // Récupérer l'inscription active de l'élève pour l'année en cours
-        $inscriptionActive = Inscription::with(['salle.niveau', 'annee'])
+        $inscriptionActive = Inscription::with(['salle.niveau.filiere', 'annee'])
             ->where('eleve_id', $eleve->id)
             ->when($anneeActive, function ($query) use ($anneeActive) {
                 return $query->where('annee_scolaire_id', $anneeActive->id);
@@ -42,49 +44,147 @@ class EleveDashboardController extends Controller
             ->where('etat', 'active')
             ->first();
         
-        // Initialiser les données du tableau de bord
+        // Données pour la première interface (Dashboard)
+        $dashboardData = $this->prepareDashboardData($eleve, $inscriptionActive);
+        
+        // Données pour la deuxième interface (Détail des notes)
+        $resultats = $this->prepareResultatsData($inscriptionActive);
+        $moyenneGenerale = $this->calculerMoyenneGenerale($resultats);
+        
+        return Inertia::render('Eleve/Index', [
+            'eleve' => $eleve,
+            'dashboardData' => $dashboardData,
+            'inscriptionActive' => $inscriptionActive,
+            'resultats' => $resultats,
+            'moyenneGenerale' => $moyenneGenerale,
+            'anneeActive' => $anneeActive,
+            'error' => $dashboardData['error'] ?? null
+        ]);
+    }
+    
+    /**
+     * Préparer les données pour le dashboard
+     */
+    private function prepareDashboardData($eleve, $inscriptionActive)
+    {
         $dashboardData = [
             'inscription' => $inscriptionActive,
             'moyenne_generale' => 0,
             'taux_reussite' => 0,
             'statistiques_notes' => [],
-            'dernieres_notes' => []
+            'dernieres_notes' => [],
+            'appreciation' => 'Non évalué'
         ];
         
-        if ($inscriptionActive) {
-            // Calculer la moyenne générale
-            $moyenneGenerale = $this->calculerMoyenneGenerale($inscriptionActive->id);
-            
-            // Calculer le taux de réussite
-            $tauxReussite = $this->calculerTauxReussite($inscriptionActive->id);
-            
-            // Récupérer les statistiques des notes
-            $statistiquesNotes = $this->getStatistiquesNotes($inscriptionActive->id);
-            
-            // Récupérer les dernières notes
-            $dernieresNotes = $this->getDernieresNotes($inscriptionActive->id);
-            
-            $dashboardData = [
-                'inscription' => $inscriptionActive,
-                'moyenne_generale' => $moyenneGenerale,
-                'taux_reussite' => $tauxReussite,
-                'statistiques_notes' => $statistiquesNotes,
-                'dernieres_notes' => $dernieresNotes,
-                'appreciation' => $this->getAppreciation($moyenneGenerale)
-            ];
+        if (!$inscriptionActive) {
+            $dashboardData['error'] = 'Aucune inscription active trouvée pour cette année scolaire.';
+            return $dashboardData;
         }
         
-        return Inertia::render('Eleve/Index', [
-            'eleve' => $eleve,
-            'dashboardData' => $dashboardData,
-            'anneeActive' => $anneeActive
-        ]);
+        // Calculer la moyenne générale
+        $moyenneGenerale = $this->calculerMoyenneGeneraleInscription($inscriptionActive->id);
+        
+        // Calculer le taux de réussite
+        $tauxReussite = $this->calculerTauxReussite($inscriptionActive->id);
+        
+        // Récupérer les statistiques des notes
+        $statistiquesNotes = $this->getStatistiquesNotes($inscriptionActive->id);
+        
+        // Récupérer les dernières notes
+        $dernieresNotes = $this->getDernieresNotes($inscriptionActive->id);
+        
+        return [
+            'inscription' => $inscriptionActive,
+            'moyenne_generale' => $moyenneGenerale,
+            'taux_reussite' => $tauxReussite,
+            'statistiques_notes' => $statistiquesNotes,
+            'dernieres_notes' => $dernieresNotes,
+            'appreciation' => $this->getAppreciation($moyenneGenerale)
+        ];
     }
     
     /**
-     * Calculer la moyenne générale de l'élève
+     * Préparer les résultats détaillés
      */
-    private function calculerMoyenneGenerale($inscriptionId)
+    private function prepareResultatsData($inscriptionActive)
+    {
+        if (!$inscriptionActive) {
+            return [
+                'matieres' => [],
+                'moyennes_trimestrielles' => [],
+            ];
+        }
+        
+        $notes = Note::with(['matiere'])
+            ->where('inscription_id', $inscriptionActive->id)
+            ->get();
+        
+        $resultatsParMatiere = [];
+        $totauxTrimestres = [
+            '1er' => ['points' => 0, 'coefficients' => 0],
+            '2ème' => ['points' => 0, 'coefficients' => 0],
+            '3ème' => ['points' => 0, 'coefficients' => 0],
+        ];
+        
+        foreach ($notes as $note) {
+            $matiereId = $note->matiere_id;
+            $trimestre = $note->trimestre;
+            
+            if (!isset($resultatsParMatiere[$matiereId])) {
+                $resultatsParMatiere[$matiereId] = [
+                    'matiere' => $note->matiere,
+                    'coefficient' => $note->matiere->coefficient ?? 1,
+                    'trimestres' => [
+                        '1er' => null,
+                        '2ème' => null,
+                        '3ème' => null,
+                    ],
+                    'moyenne_annuelle' => 0,
+                ];
+            }
+            
+            $noteValue = floatval($note->note);
+            $resultatsParMatiere[$matiereId]['trimestres'][$trimestre] = $noteValue;
+            
+            // Calculer les totaux pour les moyennes trimestrielles
+            if ($noteValue > 0) {
+                $coefficient = $note->matiere->coefficient ?? 1;
+                $totauxTrimestres[$trimestre]['points'] += $noteValue * $coefficient;
+                $totauxTrimestres[$trimestre]['coefficients'] += $coefficient;
+            }
+        }
+        
+        // Calculer les moyennes annuelles par matière
+        foreach ($resultatsParMatiere as $matiereId => &$resultat) {
+            $notesValides = array_filter($resultat['trimestres'], function ($note) {
+                return $note !== null;
+            });
+            
+            if (count($notesValides) > 0) {
+                $resultat['moyenne_annuelle'] = round(array_sum($notesValides) / count($notesValides), 2);
+            }
+        }
+        
+        // Calculer les moyennes par trimestre
+        $moyennesTrimestrielles = [];
+        foreach ($totauxTrimestres as $trimestre => $data) {
+            if ($data['coefficients'] > 0) {
+                $moyennesTrimestrielles[$trimestre] = round($data['points'] / $data['coefficients'], 2);
+            } else {
+                $moyennesTrimestrielles[$trimestre] = 0;
+            }
+        }
+        
+        return [
+            'matieres' => array_values($resultatsParMatiere),
+            'moyennes_trimestrielles' => $moyennesTrimestrielles,
+        ];
+    }
+    
+    /**
+     * Calculer la moyenne générale d'une inscription
+     */
+    private function calculerMoyenneGeneraleInscription($inscriptionId)
     {
         $notes = Note::with(['matiere'])
             ->where('inscription_id', $inscriptionId)
@@ -129,6 +229,26 @@ class EleveDashboardController extends Controller
         
         if ($totalCoefficients > 0) {
             return round($totalPoints / $totalCoefficients, 2);
+        }
+        
+        return 0;
+    }
+    
+    /**
+     * Calculer la moyenne générale à partir des résultats
+     */
+    private function calculerMoyenneGenerale($resultats)
+    {
+        if (!isset($resultats['moyennes_trimestrielles'])) {
+            return 0;
+        }
+        
+        $moyennes = array_filter($resultats['moyennes_trimestrielles'], function ($moyenne) {
+            return $moyenne > 0;
+        });
+        
+        if (count($moyennes) > 0) {
+            return round(array_sum($moyennes) / count($moyennes), 2);
         }
         
         return 0;
@@ -197,15 +317,19 @@ class EleveDashboardController extends Controller
                 'total_notes' => 0,
                 'moyenne_max' => 0,
                 'moyenne_min' => 0,
-                'notes_par_trimestre' => []
+                'notes_par_trimestre' => [
+                    '1er' => ['moyenne' => 0, 'nombre_notes' => 0],
+                    '2ème' => ['moyenne' => 0, 'nombre_notes' => 0],
+                    '3ème' => ['moyenne' => 0, 'nombre_notes' => 0]
+                ]
             ];
         }
         
         // Statistiques par trimestre
-        $trimestres = ['1er' => 0, '2ème' => 0, '3ème' => 0];
+        $trimestres = ['1er', '2ème', '3ème'];
         $notesParTrimestre = [];
         
-        foreach ($trimestres as $trimestre => $value) {
+        foreach ($trimestres as $trimestre) {
             $notesTrimestre = $notes->where('trimestre', $trimestre);
             if ($notesTrimestre->isNotEmpty()) {
                 $moyenne = $notesTrimestre->avg('note');
@@ -261,6 +385,7 @@ class EleveDashboardController extends Controller
         if ($moyenne >= 12) return 'Bien';
         if ($moyenne >= 10) return 'Assez Bien';
         if ($moyenne >= 8) return 'Passable';
-        return 'Insuffisant';
+        if ($moyenne > 0) return 'Insuffisant';
+        return 'Non évalué';
     }
 }

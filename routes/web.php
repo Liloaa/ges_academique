@@ -38,6 +38,7 @@ use App\Http\Controllers\Eleve\EleveProfileController;
 use App\Http\Controllers\Enseignant\EnseignantDashboardController;
 use App\Http\Controllers\Enseignant\EnseignantNoteController;
 use App\Http\Controllers\Enseignant\EnseignantProfileController;
+use App\Http\Controllers\Enseignant\EnseignantMessageController;
 
 // Page d'accueil
 Route::get('/', function () {
@@ -148,8 +149,18 @@ Route::middleware(['auth', \App\Http\Middleware\EnseignantMiddleware::class])->g
     Route::patch('/enseignant/profile', [EnseignantProfileController::class, 'update'])->name('enseignant.profile.update');
     Route::delete('/enseignant/profile', [EnseignantProfileController::class, 'destroy'])->name('enseignant.profile.destroy');
 
+    //Message
+    Route::get('/enseignant/messages', [EnseignantMessageController::class, 'inbox'])->name('enseignant.messages.inbox');
+    Route::get('/enseignant/messages/envoyes', [EnseignantMessageController::class, 'sent'])->name('enseignant.messages.sent');
+    Route::get('/enseignant/messages/creer', [EnseignantMessageController::class, 'create'])->name('enseignant.messages.create');
+    Route::post('/enseignant/messages/', [EnseignantMessageController::class, 'store'])->name('enseignant.messages.store');
+    Route::get('/enseignant/messages/{message}', [EnseignantMessageController::class, 'show'])->name('enseignant.messages.show');
+    Route::delete('/enseignant/messages/{message}', [EnseignantMessageController::class, 'destroy'])->name('enseignant.messages.destroy');
+    Route::post('/enseignant/messages/marquer-tous-lus', [EnseignantMessageController::class, 'markAllAsRead'])->name('enseignant.messages.mark-all-read');
+    Route::get('/enseignant/messages/enseignants', [EnseignantMessageController::class, 'getEnseignants'])->name('enseignant.messages.enseignants');
+    Route::get('/enseignant/messages/statistiques', [EnseignantMessageController::class, 'stats'])->name('enseignant.messages.stats');
+
     //Note
-    Route::get('/enseignant/notes/index', [EnseignantNoteController::class, 'index'])->name('enseignant.notes.index');
     Route::get('/enseignant/notes/statistiques', [EnseignantNoteController::class, 'statistiques'])->name('enseignant.notes.statistiques');
     Route::post('/enseignant/notes/saisie', [EnseignantNoteController::class, 'storeNotes'])->name('enseignant.notes.store');
 
@@ -162,6 +173,7 @@ Route::middleware(['auth', \App\Http\Middleware\EnseignantMiddleware::class])->g
 });
 
 //Eleve
+// routes/web.php
 Route::middleware(['auth', \App\Http\Middleware\EleveMiddleware::class])->group(function () {
     Route::get('/eleve', [EleveDashboardController::class, 'index'])->name('eleve.dashboard');
 

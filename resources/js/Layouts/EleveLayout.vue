@@ -79,7 +79,6 @@ const auth = computed(() => page.props.auth || {})
 // Liens de navigation
 const navLinks = [
   { name: 'Accueil', href: '/eleve', icon: 'accueil.png' },
-  { name: 'Notes', href: '/eleve/notes', icon: 'note.png' },
   { name: 'Messagerie', href: '/eleve/messages', icon: 'message.png',  },
 ]
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 30 déc. 2025 à 11:54
+-- Généré le : jeu. 12 fév. 2026 à 14:15
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -40,9 +40,8 @@ CREATE TABLE `annee_scolaires` (
 --
 
 INSERT INTO `annee_scolaires` (`id`, `libelle`, `active`, `created_at`, `updated_at`) VALUES
-(1, '2024-2025', 1, '2025-12-12 04:49:24', '2025-12-19 10:33:56'),
-(5, '2023-2024', 0, '2025-12-16 15:10:01', '2025-12-18 06:56:10'),
-(6, '2026-2927', 0, '2025-12-19 10:32:51', '2025-12-19 10:33:56');
+(1, '2023-2024', 0, '2026-02-06 02:31:24', '2026-02-06 02:31:24'),
+(2, '2024-2025', 1, '2026-02-06 02:31:39', '2026-02-06 02:31:44');
 
 -- --------------------------------------------------------
 
@@ -55,14 +54,6 @@ CREATE TABLE `cache` (
   `value` mediumtext NOT NULL,
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `cache`
---
-
-INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('admin@gmail.com|127.0.0.1', 'i:1;', 1766744574),
-('admin@gmail.com|127.0.0.1:timer', 'i:1766744574;', 1766744574);
 
 -- --------------------------------------------------------
 
@@ -102,9 +93,8 @@ CREATE TABLE `eleves` (
 --
 
 INSERT INTO `eleves` (`id`, `matricule`, `nom`, `prenom`, `date_naissance`, `email`, `sexe`, `adresse`, `telephone`, `user_id`, `created_at`, `updated_at`) VALUES
-(2, 'El001', 'Raz', 'Erica', '2009-06-13', 'erica@gmail.com', 'Féminin', NULL, NULL, 6, '2025-12-18 18:25:27', '2025-12-18 18:27:11'),
-(3, 'El002', 'Nambi', 'Fifa', '2008-12-03', 'fifa@gmail.com', 'Masculin', NULL, NULL, 7, '2025-12-18 18:26:42', '2025-12-18 18:26:42'),
-(4, 'El003', 'Laza', 'Rina', '2011-02-14', 'rina@gmail.com', 'Masculin', NULL, NULL, 8, '2025-12-18 18:28:14', '2025-12-18 18:28:14');
+(1, 'El001', 'erica', 'er', '2002-06-13', 'erica@gmail.com', 'Féminin', NULL, NULL, 4, '2026-02-06 03:37:19', '2026-02-06 03:37:19'),
+(2, 'El006', 'Mina', 'Li', '2014-01-01', 'mina@gmail.com', 'Masculin', NULL, NULL, 6, '2026-02-06 09:39:59', '2026-02-06 09:39:59');
 
 -- --------------------------------------------------------
 
@@ -133,9 +123,9 @@ CREATE TABLE `enseignants` (
 --
 
 INSERT INTO `enseignants` (`id`, `matriculeEnseig`, `nom`, `prenom`, `grade`, `specialite`, `email`, `telephone`, `sexe`, `adresse`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'En001', 'mima', 'mi', NULL, NULL, 'mima@gmail.com', NULL, NULL, NULL, 2, '2025-12-12 04:15:36', '2025-12-12 04:15:36'),
-(2, 'En002', 'Rakoto', 'Rolland', NULL, NULL, 'rolland@gmail.com', '034 45 485 50', 'Homme', NULL, 4, '2025-12-18 07:43:29', '2025-12-18 07:43:29'),
-(3, 'En003', 'Landrie', 'Vero', NULL, NULL, 'vero@gmail.com', '034 40 000 01', 'Femme', NULL, 5, '2025-12-18 07:47:32', '2025-12-18 07:47:32');
+(1, 'Ens001', 'mi', 'mima', NULL, NULL, 'mima@gmail.com', NULL, 'Femme', NULL, 2, '2026-02-06 03:35:14', '2026-02-06 03:35:14'),
+(2, 'Ens002', 're', 'remi', NULL, NULL, 'remi@gmail.com', NULL, 'Homme', NULL, 3, '2026-02-06 03:36:08', '2026-02-06 03:36:08'),
+(3, 'Ens004', 'Divin', 'Laza', NULL, NULL, 'laza@gmail.com', NULL, NULL, NULL, 5, '2026-02-06 09:38:28', '2026-02-06 09:38:28');
 
 -- --------------------------------------------------------
 
@@ -172,8 +162,8 @@ CREATE TABLE `filieres` (
 --
 
 INSERT INTO `filieres` (`id`, `nomFiliere`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'Scientifique', NULL, '2025-12-12 04:49:48', '2025-12-12 04:49:48'),
-(2, 'Littéraire', NULL, '2025-12-12 04:58:12', '2025-12-12 04:58:12');
+(1, 'Scientifique', NULL, '2026-02-06 02:32:10', '2026-02-06 02:32:10'),
+(2, 'Littéraire', NULL, '2026-02-06 02:32:25', '2026-02-06 02:32:25');
 
 -- --------------------------------------------------------
 
@@ -197,9 +187,7 @@ CREATE TABLE `inscriptions` (
 --
 
 INSERT INTO `inscriptions` (`id`, `eleve_id`, `salle_id`, `annee_scolaire_id`, `date_inscription`, `etat`, `created_at`, `updated_at`) VALUES
-(2, 3, 19, 1, '2025-12-19', 'active', '2025-12-18 18:48:52', '2025-12-18 18:48:52'),
-(3, 4, 16, 1, '2025-12-19', 'active', '2025-12-18 19:06:08', '2025-12-18 19:06:08'),
-(4, 2, 33, 1, '2025-12-19', 'active', '2025-12-18 19:06:34', '2025-12-18 19:06:34');
+(1, 1, 13, 2, '2025-11-11', 'active', '2026-02-06 03:39:49', '2026-02-06 03:39:49');
 
 -- --------------------------------------------------------
 
@@ -257,13 +245,8 @@ CREATE TABLE `matieres` (
 --
 
 INSERT INTO `matieres` (`id`, `nomMatiere`, `coefficient`, `niveau_id`, `enseignant_id`, `created_at`, `updated_at`) VALUES
-(2, 'SVT', 2, 13, 1, '2025-12-18 18:29:01', '2025-12-18 18:29:01'),
-(3, 'Calcul', 2, 11, 2, '2025-12-18 18:29:38', '2025-12-18 18:29:38'),
-(4, 'Mathematique', 3, 13, 2, '2025-12-18 18:30:11', '2025-12-18 18:30:11'),
-(5, 'SVT', 3, 28, 1, '2025-12-18 18:30:47', '2025-12-18 18:37:00'),
-(6, 'Mathematique', 4, 28, 2, '2025-12-18 18:37:37', '2025-12-18 18:37:37'),
-(7, 'Francais', 2, 13, 3, '2025-12-18 18:38:13', '2025-12-18 18:38:13'),
-(8, 'Francais', 3, 28, 3, '2025-12-18 18:38:40', '2025-12-18 18:38:40');
+(1, 'SVT', 2, 15, 1, '2026-02-06 03:38:13', '2026-02-06 03:38:13'),
+(2, 'Mathematique', 3, 15, 1, '2026-02-06 03:38:37', '2026-02-06 03:38:37');
 
 -- --------------------------------------------------------
 
@@ -289,8 +272,7 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `sujet`, `contenu`, `date_envoi`, `lu`, `expediteur_id`, `destinataire_id`, `annee_scolaire_id`, `created_at`, `updated_at`) VALUES
-(1, 'eccolage', 'votre ecolage de Juillet', '2025-12-18 22:23:04', 1, 1, 6, 1, '2025-12-18 19:23:04', '2025-12-18 19:41:19'),
-(2, 'Re: eccolage', 'merci 1111111111111111111111111111111111', '2025-12-26 10:19:37', 1, 6, 1, 1, '2025-12-26 07:19:37', '2025-12-26 07:20:00');
+(1, 'Question sur le cours', 'mon note SVT de 3eme trimestre est 17', '2026-02-06 06:43:44', 1, 4, 2, 2, '2026-02-06 03:43:44', '2026-02-06 04:35:16');
 
 -- --------------------------------------------------------
 
@@ -344,36 +326,36 @@ CREATE TABLE `niveaux` (
 --
 
 INSERT INTO `niveaux` (`id`, `nomNiveau`, `description`, `cycle`, `filiere_id`, `created_at`, `updated_at`) VALUES
-(1, '6èmeA', NULL, 'college', NULL, '2025-12-12 05:28:29', '2025-12-12 05:28:29'),
-(2, '11èmeA', NULL, 'primaire', NULL, '2025-12-18 06:57:38', '2025-12-18 06:57:38'),
-(3, '11èmeB', NULL, 'primaire', NULL, '2025-12-18 06:58:51', '2025-12-18 06:58:51'),
-(4, '10èmeA', NULL, 'primaire', NULL, '2025-12-18 06:59:13', '2025-12-18 06:59:13'),
-(5, '10èmeB', NULL, 'primaire', NULL, '2025-12-18 06:59:38', '2025-12-18 06:59:38'),
-(6, '9èmeA', NULL, 'primaire', NULL, '2025-12-18 07:00:11', '2025-12-18 07:00:11'),
-(7, '9èmeB', NULL, 'primaire', NULL, '2025-12-18 07:00:26', '2025-12-18 07:00:26'),
-(8, '8èmeA', NULL, 'primaire', NULL, '2025-12-18 07:00:51', '2025-12-18 07:00:51'),
-(9, '8èmeB', NULL, 'primaire', NULL, '2025-12-18 07:01:17', '2025-12-18 07:01:17'),
-(10, '7èmeA', NULL, 'primaire', NULL, '2025-12-18 07:01:28', '2025-12-18 07:01:28'),
-(11, '7èmeB', NULL, 'primaire', NULL, '2025-12-18 07:01:58', '2025-12-18 07:01:58'),
-(12, '6èmeB', NULL, 'college', NULL, '2025-12-18 07:02:25', '2025-12-18 07:02:25'),
-(13, '5èmeA', NULL, 'college', NULL, '2025-12-18 07:02:43', '2025-12-18 07:02:43'),
-(16, '4èmeA', NULL, 'college', NULL, '2025-12-18 07:03:41', '2025-12-18 07:03:41'),
-(17, '4èmeB', NULL, 'college', NULL, '2025-12-18 07:04:16', '2025-12-18 07:04:16'),
-(18, '5èmeB', NULL, 'college', NULL, '2025-12-18 07:04:37', '2025-12-18 07:04:37'),
-(19, '3èmeA', NULL, 'college', NULL, '2025-12-18 07:05:07', '2025-12-18 07:05:15'),
-(20, '3èmeB', NULL, 'college', NULL, '2025-12-18 07:05:36', '2025-12-18 07:05:36'),
-(21, '2nde L A', NULL, 'lycee', 2, '2025-12-18 07:06:02', '2025-12-18 07:06:02'),
-(22, '2nde L B', NULL, 'lycee', 2, '2025-12-18 07:06:34', '2025-12-18 07:06:34'),
-(23, '1ère L A', NULL, 'lycee', 2, '2025-12-18 07:07:45', '2025-12-18 07:07:45'),
-(24, '1ère L B', NULL, 'lycee', 2, '2025-12-18 07:09:00', '2025-12-18 07:09:00'),
-(25, 'Terminale L A', NULL, 'lycee', 2, '2025-12-18 07:09:36', '2025-12-18 07:09:36'),
-(26, '2nde S A', NULL, 'lycee', 1, '2025-12-18 07:09:56', '2025-12-18 07:09:56'),
-(27, '2nde S B', NULL, 'lycee', 1, '2025-12-18 07:10:25', '2025-12-18 07:10:25'),
-(28, '1ère S A', NULL, 'lycee', 1, '2025-12-18 07:10:49', '2025-12-18 07:10:49'),
-(29, '1ère S B', NULL, 'lycee', 1, '2025-12-18 07:11:22', '2025-12-18 07:11:22'),
-(30, 'Terminale L B', NULL, 'lycee', 2, '2025-12-18 07:11:56', '2025-12-18 07:11:56'),
-(31, 'Terminale S A', NULL, 'lycee', 1, '2025-12-18 07:12:15', '2025-12-18 07:12:15'),
-(32, 'Terminale S B', NULL, 'lycee', 1, '2025-12-18 07:12:50', '2025-12-18 07:12:50');
+(1, '11 ème A', NULL, 'primaire', NULL, '2026-02-06 02:33:03', '2026-02-06 02:33:03'),
+(2, '11 ème B', NULL, 'primaire', NULL, '2026-02-06 02:33:18', '2026-02-06 02:33:18'),
+(3, '10 ème A', NULL, 'primaire', NULL, '2026-02-06 02:33:27', '2026-02-06 02:33:27'),
+(4, '10 ème B', NULL, 'primaire', NULL, '2026-02-06 02:33:46', '2026-02-06 02:33:46'),
+(5, '9 ème A', NULL, 'primaire', NULL, '2026-02-06 02:33:58', '2026-02-06 02:33:58'),
+(6, '9 ème B', NULL, 'primaire', NULL, '2026-02-06 02:34:14', '2026-02-06 02:34:14'),
+(7, '8 ème A', NULL, 'primaire', NULL, '2026-02-06 02:34:26', '2026-02-06 02:34:26'),
+(8, '8 ème B', NULL, 'primaire', NULL, '2026-02-06 02:34:38', '2026-02-06 02:34:38'),
+(9, '7 ème A', NULL, 'primaire', NULL, '2026-02-06 02:34:49', '2026-02-06 02:34:49'),
+(10, '7 ème B', NULL, 'primaire', NULL, '2026-02-06 02:34:59', '2026-02-06 02:34:59'),
+(11, '6 ème A', NULL, 'college', NULL, '2026-02-06 02:35:24', '2026-02-06 02:35:24'),
+(13, '6 ème B', NULL, 'college', NULL, '2026-02-06 02:36:12', '2026-02-06 02:36:12'),
+(15, '5 ème A', NULL, 'college', NULL, '2026-02-06 02:36:48', '2026-02-06 02:37:00'),
+(16, '5 ème B', NULL, 'college', NULL, '2026-02-06 02:37:18', '2026-02-06 02:37:18'),
+(17, '4 ème A', NULL, 'college', NULL, '2026-02-06 02:37:35', '2026-02-06 02:37:35'),
+(18, '4 ème B', NULL, 'college', NULL, '2026-02-06 02:37:49', '2026-02-06 02:37:49'),
+(20, '3 ème A', NULL, 'college', NULL, '2026-02-06 02:38:43', '2026-02-06 02:38:43'),
+(21, '3 ème B', NULL, 'college', NULL, '2026-02-06 02:39:43', '2026-02-06 02:39:43'),
+(22, '2nde L A', NULL, 'lycee', 2, '2026-02-06 02:40:34', '2026-02-06 02:40:34'),
+(23, '2nde L B', NULL, 'lycee', 2, '2026-02-06 02:41:10', '2026-02-06 02:41:10'),
+(24, '1ère L A', NULL, 'lycee', 2, '2026-02-06 02:41:57', '2026-02-06 02:41:57'),
+(25, '1ère L B', NULL, 'lycee', 2, '2026-02-06 02:44:14', '2026-02-06 02:44:14'),
+(26, 'Terminale L A', NULL, 'lycee', 2, '2026-02-06 02:46:09', '2026-02-06 02:46:09'),
+(27, 'Terminale L B', NULL, 'lycee', 2, '2026-02-06 02:46:34', '2026-02-06 02:46:34'),
+(28, '2nde S A', NULL, 'lycee', 1, '2026-02-06 02:47:02', '2026-02-06 02:47:02'),
+(29, '2nde S B', NULL, 'lycee', 1, '2026-02-06 02:47:34', '2026-02-06 02:48:04'),
+(30, '1ère S A', NULL, 'lycee', 1, '2026-02-06 02:48:42', '2026-02-06 02:48:42'),
+(31, '1ère S B', NULL, 'lycee', 1, '2026-02-06 02:49:09', '2026-02-06 02:49:09'),
+(32, 'Terminale S A', NULL, 'lycee', 1, '2026-02-06 02:49:47', '2026-02-06 02:49:47'),
+(33, 'Terminale S B', NULL, 'lycee', 1, '2026-02-06 02:50:11', '2026-02-06 02:50:11');
 
 -- --------------------------------------------------------
 
@@ -399,27 +381,12 @@ CREATE TABLE `notes` (
 --
 
 INSERT INTO `notes` (`id`, `inscription_id`, `matiere_id`, `enseignant_id`, `trimestre`, `note`, `date_saisie`, `commentaire`, `created_at`, `updated_at`) VALUES
-(4, 3, 3, 2, '1er', 14.00, '2025-12-18', NULL, '2025-12-18 19:07:16', '2025-12-18 19:08:30'),
-(5, 3, 3, 2, '2ème', 12.00, '2025-12-18', NULL, '2025-12-18 19:07:33', '2025-12-18 19:08:13'),
-(6, 3, 3, 2, '3ème', 13.50, '2025-12-18', NULL, '2025-12-18 19:08:06', '2025-12-18 19:08:06'),
-(7, 2, 7, 3, '1er', 11.00, '2025-12-18', NULL, '2025-12-18 19:11:16', '2025-12-18 19:11:16'),
-(8, 2, 4, 2, '1er', 13.00, '2025-12-18', NULL, '2025-12-18 19:11:16', '2025-12-18 19:11:16'),
-(9, 2, 2, 1, '1er', 15.00, '2025-12-18', NULL, '2025-12-18 19:11:16', '2025-12-18 19:11:16'),
-(10, 2, 7, 3, '2ème', 15.00, '2025-12-18', NULL, '2025-12-18 19:11:46', '2025-12-18 19:11:46'),
-(11, 2, 4, 2, '2ème', 10.00, '2025-12-18', NULL, '2025-12-18 19:11:46', '2025-12-18 19:11:46'),
-(12, 2, 2, 1, '2ème', 15.50, '2025-12-18', NULL, '2025-12-18 19:11:46', '2025-12-18 19:11:46'),
-(13, 2, 7, 3, '3ème', 16.00, '2025-12-18', NULL, '2025-12-18 19:12:17', '2025-12-18 19:12:17'),
-(14, 2, 4, 2, '3ème', 11.50, '2025-12-18', NULL, '2025-12-18 19:12:17', '2025-12-18 19:12:17'),
-(15, 2, 2, 1, '3ème', 13.00, '2025-12-18', NULL, '2025-12-18 19:12:17', '2025-12-18 19:12:17'),
-(16, 4, 8, 3, '1er', 14.00, '2025-12-18', NULL, '2025-12-18 19:13:35', '2025-12-18 19:13:35'),
-(17, 4, 6, 2, '1er', 13.00, '2025-12-18', NULL, '2025-12-18 19:13:35', '2025-12-18 19:13:35'),
-(18, 4, 5, 1, '1er', 11.00, '2025-12-18', NULL, '2025-12-18 19:13:35', '2025-12-18 19:13:35'),
-(19, 4, 8, 3, '2ème', 10.00, '2025-12-18', NULL, '2025-12-18 19:14:09', '2025-12-18 19:14:09'),
-(20, 4, 6, 2, '2ème', 16.00, '2025-12-18', NULL, '2025-12-18 19:14:09', '2025-12-18 19:14:09'),
-(21, 4, 5, 1, '2ème', 11.75, '2025-12-18', NULL, '2025-12-18 19:14:09', '2025-12-18 19:14:09'),
-(22, 4, 8, 3, '3ème', 15.00, '2025-12-18', NULL, '2025-12-18 19:14:27', '2025-12-18 19:14:27'),
-(23, 4, 6, 2, '3ème', 10.00, '2025-12-18', NULL, '2025-12-18 19:14:27', '2025-12-18 19:14:56'),
-(24, 4, 5, 1, '3ème', 11.00, '2025-12-18', NULL, '2025-12-18 19:14:27', '2025-12-18 19:14:27');
+(1, 1, 2, 2, '1er', 14.00, '2026-02-06', NULL, '2026-02-06 03:40:33', '2026-02-06 03:40:33'),
+(2, 1, 1, 1, '1er', 16.00, '2026-02-06', NULL, '2026-02-06 03:40:33', '2026-02-06 03:40:33'),
+(3, 1, 2, 2, '2ème', 10.00, '2026-02-06', NULL, '2026-02-06 03:40:54', '2026-02-06 03:40:54'),
+(4, 1, 1, 1, '2ème', 15.00, '2026-02-06', NULL, '2026-02-06 03:40:54', '2026-02-06 03:40:54'),
+(5, 1, 2, 2, '3ème', 13.00, '2026-02-06', NULL, '2026-02-06 03:41:19', '2026-02-06 03:41:19'),
+(6, 1, 1, 1, '3ème', 14.00, '2026-02-06', NULL, '2026-02-06 03:41:19', '2026-02-06 03:41:19');
 
 -- --------------------------------------------------------
 
@@ -453,36 +420,36 @@ CREATE TABLE `salles` (
 --
 
 INSERT INTO `salles` (`id`, `nomSalle`, `capacite`, `niveau_id`, `created_at`, `updated_at`) VALUES
-(7, 'S01', 20, 2, '2025-12-18 07:21:38', '2025-12-18 07:21:38'),
-(8, 'S02', 20, 3, '2025-12-18 07:22:01', '2025-12-18 07:22:01'),
-(9, 'S03', 20, 4, '2025-12-18 07:22:30', '2025-12-18 07:22:30'),
-(10, 'S04', 20, 5, '2025-12-18 07:22:50', '2025-12-18 07:22:50'),
-(11, 'S05', 20, 6, '2025-12-18 07:23:23', '2025-12-18 07:23:23'),
-(12, 'S06', 20, 7, '2025-12-18 07:23:45', '2025-12-18 07:23:45'),
-(13, 'S07', 20, 8, '2025-12-18 07:25:31', '2025-12-18 07:25:31'),
-(14, 'S08', 20, 9, '2025-12-18 07:26:08', '2025-12-18 07:26:08'),
-(15, 'S09', 20, 10, '2025-12-18 07:26:32', '2025-12-18 07:26:32'),
-(16, 'S10', 20, 11, '2025-12-18 07:26:48', '2025-12-18 07:26:48'),
-(17, 'S11', 20, 1, '2025-12-18 07:27:11', '2025-12-18 07:27:11'),
-(18, 'S12', 20, 12, '2025-12-18 07:27:34', '2025-12-18 07:27:34'),
-(19, 'S13', 20, 13, '2025-12-18 07:27:54', '2025-12-18 07:27:54'),
-(20, 'S14', 20, 18, '2025-12-18 07:28:11', '2025-12-18 07:28:11'),
-(21, 'S15', 20, 16, '2025-12-18 07:28:31', '2025-12-18 07:28:31'),
-(22, 'S16', 20, 17, '2025-12-18 07:28:52', '2025-12-18 07:28:52'),
-(23, 'S17', 20, 19, '2025-12-18 07:29:24', '2025-12-18 07:29:24'),
-(24, 'S18', 20, 20, '2025-12-18 07:29:41', '2025-12-18 07:29:41'),
-(25, 'S19', 20, 21, '2025-12-18 07:30:03', '2025-12-18 07:30:03'),
-(26, 'S20', 20, 22, '2025-12-18 07:30:34', '2025-12-18 07:30:34'),
-(27, 'S21', 20, 23, '2025-12-18 07:31:03', '2025-12-18 07:31:03'),
-(28, 'S22', 20, 24, '2025-12-18 07:31:34', '2025-12-18 07:31:34'),
-(29, 'S23', 20, 25, '2025-12-18 07:35:59', '2025-12-18 07:35:59'),
-(30, 'S24', 20, 30, '2025-12-18 07:36:35', '2025-12-18 07:36:35'),
-(31, 'S25', 20, 26, '2025-12-18 07:37:31', '2025-12-18 07:37:31'),
-(32, 'S26', 20, 27, '2025-12-18 07:38:29', '2025-12-18 07:38:29'),
-(33, 'S27', 20, 28, '2025-12-18 07:39:23', '2025-12-18 07:39:23'),
-(34, 'S28', 20, 29, '2025-12-18 07:39:39', '2025-12-18 07:39:39'),
-(35, 'S29', 20, 31, '2025-12-18 07:40:18', '2025-12-18 07:40:18'),
-(36, 'S30', 20, 32, '2025-12-18 07:40:34', '2025-12-18 07:40:34');
+(1, 'S001', 30, 1, '2026-02-06 02:51:10', '2026-02-06 02:51:10'),
+(2, 'S002', 30, 2, '2026-02-06 02:51:28', '2026-02-06 02:51:28'),
+(3, 'S003', 30, 3, '2026-02-06 02:51:44', '2026-02-06 02:51:44'),
+(4, 'S004', 30, 4, '2026-02-06 02:52:03', '2026-02-06 02:52:03'),
+(5, 'S005', 30, 5, '2026-02-06 02:52:33', '2026-02-06 02:52:33'),
+(6, 'S006', 30, 6, '2026-02-06 02:52:54', '2026-02-06 02:52:54'),
+(7, 'S007', 30, 7, '2026-02-06 02:53:15', '2026-02-06 02:53:15'),
+(8, 'S008', 30, 8, '2026-02-06 02:53:29', '2026-02-06 02:53:29'),
+(9, 'S009', 30, 9, '2026-02-06 02:54:03', '2026-02-06 02:54:03'),
+(10, 'S010', 30, 10, '2026-02-06 02:54:27', '2026-02-06 02:54:27'),
+(11, 'S011', 30, 11, '2026-02-06 02:54:50', '2026-02-06 02:54:50'),
+(12, 'S012', 30, 13, '2026-02-06 02:55:08', '2026-02-06 02:55:08'),
+(13, 'S013', 30, 15, '2026-02-06 02:55:32', '2026-02-06 02:55:32'),
+(14, 'S014', 30, 16, '2026-02-06 02:55:51', '2026-02-06 02:55:51'),
+(15, 'S015', 30, 17, '2026-02-06 02:56:08', '2026-02-06 02:56:08'),
+(16, 'S016', 30, 18, '2026-02-06 02:56:33', '2026-02-06 02:56:33'),
+(17, 'S017', 30, 20, '2026-02-06 02:57:04', '2026-02-06 02:57:04'),
+(18, 'S018', 30, 21, '2026-02-06 02:57:40', '2026-02-06 02:57:40'),
+(19, 'S019', 30, 22, '2026-02-06 02:57:56', '2026-02-06 02:57:56'),
+(20, 'S020', 30, 23, '2026-02-06 02:58:37', '2026-02-06 02:58:37'),
+(21, 'S021', 30, 24, '2026-02-06 03:05:39', '2026-02-06 03:05:39'),
+(22, 'S022', 30, 25, '2026-02-06 03:05:57', '2026-02-06 03:05:57'),
+(23, 'S023', 30, 26, '2026-02-06 03:06:21', '2026-02-06 03:06:21'),
+(24, 'S024', 30, 27, '2026-02-06 03:06:36', '2026-02-06 03:06:36'),
+(25, 'S025', 30, 28, '2026-02-06 03:06:56', '2026-02-06 03:06:56'),
+(26, 'S026', 30, 29, '2026-02-06 03:07:13', '2026-02-06 03:07:13'),
+(27, 'S027', 30, 30, '2026-02-06 03:07:27', '2026-02-06 03:07:27'),
+(28, 'S028', 30, 31, '2026-02-06 03:07:45', '2026-02-06 03:07:45'),
+(29, 'S029', 30, 32, '2026-02-06 03:08:08', '2026-02-06 03:08:08'),
+(30, 'S030', 30, 33, '2026-02-06 03:08:30', '2026-02-06 03:09:07');
 
 -- --------------------------------------------------------
 
@@ -504,7 +471,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('JpLXwv6GsTRakWfTtdCdSxoiBPJDVujRZPeWaSXZ', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiNkxOc2x6dlRRMk80WExwV2JsTnRabXVTTzVhYTlCM0trdUlhcmcwOCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1766744644);
+('pbYBQqeP2nIGDKtyZGTx4BQfvGoaQkoRLCVkxn2D', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:147.0) Gecko/20100101 Firefox/147.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZWFXN2l2THNTeWxSTHJpbVhldkRYaDB2bWF5M0FHVmNTaGQ4ZkZQZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1770381950),
+('tV6gwex9laC9Ww5mk5B7PMOCk19G3V3K3qai5E5e', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:147.0) Gecko/20100101 Firefox/147.0', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoia0YybmsyNzAzcExYdnJXeTJndUxuOWNIQ01CZHdCblVXTVFXZjI5TiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1770363726);
 
 -- --------------------------------------------------------
 
@@ -533,13 +501,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `prenom`, `nom`, `email`, `email_verified_at`, `password`, `role`, `force_password_change`, `two_factor_enabled`, `deleted_at`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'ad', 'admin@gmail.com', NULL, '$2y$12$Bj9v23BdLiQBi2aEzfTy3.HNcHKj9jpoiEpk7z.JH0WgbtGGU0JvS', 'admin', 1, 0, NULL, NULL, '2025-12-12 04:12:04', '2025-12-26 07:23:59'),
-(2, 'mi', 'mima', 'mima@gmail.com', NULL, '$2y$12$BurWz8611LXCY5Q7zoZP4ONMboUx0gzHY33tqBfP.YRnlU4JPlLUq', 'enseignant', 1, 0, NULL, NULL, '2025-12-12 04:15:36', '2025-12-12 04:15:36'),
-(4, 'Rolland', 'Rakoto', 'rolland@gmail.com', NULL, '$2y$12$rIswYVBDavkXTo4IkcymZuiVCqtRC0gwYsJW1yCAL5/ivQUGcJN2e', 'enseignant', 1, 0, NULL, NULL, '2025-12-18 07:43:29', '2025-12-18 07:43:29'),
-(5, 'Vero', 'Landrie', 'vero@gmail.com', NULL, '$2y$12$Ayqr7QWvD8GSqcsYL3aY3O3KIjcXFpJRxLpAhpYjyzdZ/.DBDM36K', 'enseignant', 1, 0, NULL, NULL, '2025-12-18 07:47:32', '2025-12-18 07:47:32'),
-(6, 'Erica', 'Raz', 'erica@gmail.com', NULL, '$2y$12$jNk7Pg6.fX6rtyMZhT8gFe.Gs8uBzPkr8LIPNgMpjt4xjVEhSpZs6', 'eleve', 1, 0, NULL, NULL, '2025-12-18 18:25:27', '2025-12-18 18:25:27'),
-(7, 'Fifa', 'Nambi', 'fifa@gmail.com', NULL, '$2y$12$BWTIlxX1PKA5i7hNGZdmZObLMG3bBSjOfYQKmN3GIV6JPV4ed4fqy', 'eleve', 1, 0, NULL, NULL, '2025-12-18 18:26:42', '2025-12-18 18:26:42'),
-(8, 'Rina', 'Laza', 'rina@gmail.com', NULL, '$2y$12$RZTbS3t0LDzXH7I42QzSqu8oM6wL6Y6fubvlqMB1xh3JFINEzWINy', 'eleve', 1, 0, NULL, NULL, '2025-12-18 18:28:14', '2025-12-18 18:28:14');
+(1, 'admin', 'ad', 'admin@gmail.com', NULL, '$2y$12$3qFAKtQFZOvNKsReBybuJujRPhL/rhAkHhCys5b044ete3559hzNy', 'admin', 1, 0, NULL, NULL, '2026-02-06 02:30:59', '2026-02-06 02:30:59'),
+(2, 'mima', 'mi', 'mima@gmail.com', NULL, '$2y$12$Q0p5eiR8Q5KVNuzGW6QdMuy578n9BfsLaW4jcfl9TEvnrpub0n2wG', 'enseignant', 1, 0, NULL, NULL, '2026-02-06 03:35:14', '2026-02-06 03:35:14'),
+(3, 'remi', 're', 'remi@gmail.com', NULL, '$2y$12$tlModB3ow/cVJ7GFRdN02eL5aEaa.6XiN1SB0HQ8IXRTRqLIIav6S', 'enseignant', 1, 0, NULL, NULL, '2026-02-06 03:36:08', '2026-02-06 03:36:08'),
+(4, 'er', 'erica', 'erica@gmail.com', NULL, '$2y$12$NHJSuw85a1O0iMjStO4G8OTVed.xSafwxCvGXBIWWNvWuhNXdXQIG', 'eleve', 1, 0, NULL, NULL, '2026-02-06 03:37:18', '2026-02-06 03:37:18'),
+(5, 'Laza', 'Divin', 'laza@gmail.com', NULL, '$2y$12$9/s5kiXxnj1D1By9lFCfK.ilC3ncfPB5M7YEYaOyOFXtz/dEGVI1a', 'enseignant', 1, 0, NULL, NULL, '2026-02-06 09:38:28', '2026-02-06 09:38:28'),
+(6, 'Li', 'Mina', 'mina@gmail.com', NULL, '$2y$12$Bz6OCAUL0RpqCF/tRRQdsO58o/Ka5qciuTkg2zQwxQkXqvAefnY22', 'eleve', 1, 0, NULL, NULL, '2026-02-06 09:39:59', '2026-02-06 09:39:59');
 
 --
 -- Index pour les tables déchargées
@@ -693,13 +660,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `annee_scolaires`
 --
 ALTER TABLE `annee_scolaires`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `eleves`
 --
 ALTER TABLE `eleves`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `enseignants`
@@ -717,13 +684,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT pour la table `filieres`
 --
 ALTER TABLE `filieres`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `inscriptions`
 --
 ALTER TABLE `inscriptions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `jobs`
@@ -735,13 +702,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT pour la table `matieres`
 --
 ALTER TABLE `matieres`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `migrations`
@@ -753,25 +720,25 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT pour la table `niveaux`
 --
 ALTER TABLE `niveaux`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT pour la table `notes`
 --
 ALTER TABLE `notes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `salles`
 --
 ALTER TABLE `salles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Contraintes pour les tables déchargées

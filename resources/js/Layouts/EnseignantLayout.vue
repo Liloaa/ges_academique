@@ -79,7 +79,7 @@ const auth = computed(() => page.props.auth || {})
 // Liens de navigation
 const navLinks = [
   { name: 'Accueil', href: '/enseignant', icon: 'accueil.png' },
-  { name: 'Notes des élèves', href: '/enseignant/notes/index', icon: 'note.png' },
+   { name: 'Messagerie', href: '/enseignant/messages', icon: 'message.png',  },
 ]
 
 // Fonction pour obtenir les initiales de l'utilisateur
