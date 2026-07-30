@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\AnneeScolaire;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 
 class EnseignantMessageController extends Controller
 {
+    public function __construct(private NotificationService $notificationService)
+    {
+    }
+
     // Boîte de réception de l'enseignant
     public function inbox()
     {
@@ -109,7 +114,8 @@ class EnseignantMessageController extends Controller
         $data['expediteur_id'] = $user->id;
         $data['date_envoi'] = now();
 
-        Message::create($data);
+        $message = Message::create($data);
+        $this->notificationService->notifierNouveauMessage($message);
 
         return redirect()->route('enseignant.messages.sent')
             ->with('success', 'Message envoyé avec succès.');

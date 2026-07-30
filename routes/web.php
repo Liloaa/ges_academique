@@ -81,6 +81,13 @@ Route::get('/home', function () {
     return redirect()->route('verification.notice');
 })->middleware('auth')->name('home');
 
+// NOTIFICATIONS (communes à tous les rôles connectés)
+Route::middleware('auth')->prefix('notifications')->name('notifications.')->group(function () {
+    Route::get('/', [App\Http\Controllers\NotificationController::class, 'index'])->name('index');
+    Route::post('/{id}/lu', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('read');
+    Route::post('/tout-lire', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('read-all');
+});
+
 
 // PROFIL UTILISATEUR (pour les utilisateurs sans rôle spécifique)
 Route::middleware('auth')->group(function () {
@@ -116,6 +123,9 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
 
     Route::get('/admin/eleves/{eleve}/historique', [EleveController::class, 'historique'])
         ->name('admin.eleves.historique');
+
+    Route::get('/admin/eleves/export/excel', [EleveController::class, 'export'])
+        ->name('eleves.export');
 
     Route::resource('admin/enseignants', EnseignantController::class)->names('enseignants');
     Route::resource('admin/matieres', MatiereController::class)->names('matieres');
@@ -180,6 +190,7 @@ Route::middleware(['auth', \App\Http\Middleware\EleveMiddleware::class])->group(
     // Notes
     Route::get('/eleve/notes', [EleveNoteController::class, 'index'])->name('eleve.notes.index');
     Route::get('/eleve/notes/bulletin', [EleveNoteController::class, 'bulletin'])->name('eleve.notes.bulletin');
+    Route::get('/eleve/notes/bulletin/pdf', [EleveNoteController::class, 'downloadBulletin'])->name('eleve.notes.bulletin.pdf');
     
     //Profile
     Route::get('/eleve/profile', [EleveProfileController::class, 'edit'])->name('eleve.profile.edit');

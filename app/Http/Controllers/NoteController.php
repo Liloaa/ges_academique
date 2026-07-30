@@ -6,6 +6,7 @@ use App\Models\Note;
 use App\Models\Matiere;
 use App\Models\Inscription;
 use App\Models\Enseignant;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\DB;
 
 class NoteController extends Controller
 {
+    public function __construct(private NotificationService $notificationService)
+    {
+    }
+
     public function index(Request $request)
     {
         $inscriptionId = $request->get('inscription_id');
@@ -117,6 +122,8 @@ class NoteController extends Controller
                         ->where('trimestre', $validated['trimestre'])
                         ->first();
 
+                    $matiere = Matiere::find($noteData['matiere_id']);
+
                     if ($noteExistante) {
                         // Mettre à jour la note existante
                         $noteExistante->update([
@@ -136,6 +143,16 @@ class NoteController extends Controller
                             'date_saisie' => now()->format('Y-m-d'),
                         ]);
                         $notesCreees++;
+                    }
+
+                    if ($matiere) {
+                        $this->notificationService->notifierNoteAjoutee(
+                            $validated['inscription_id'],
+                            $matiere,
+                            $validated['trimestre'],
+                            (float) $noteData['note'],
+                            (bool) $noteExistante
+                        );
                     }
                 }
             }

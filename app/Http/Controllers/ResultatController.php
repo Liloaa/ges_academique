@@ -6,12 +6,17 @@ use App\Models\Eleve;
 use App\Models\Inscription;
 use App\Models\Note;
 use App\Models\AnneeScolaire;
+use App\Services\BulletinService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 
 class ResultatController extends Controller
 {
+    public function __construct(private BulletinService $bulletinService)
+    {
+    }
+
     public function index(Request $request)
     {
         $eleveId = $request->get('eleve_id');
@@ -143,89 +148,15 @@ class ResultatController extends Controller
      */
     private function calculerResultatsEleve($inscriptionId)
     {
-        $notes = Note::with(['matiere'])
-            ->where('inscription_id', $inscriptionId)
-            ->get();
-
-        $resultatsParMatiere = [];
-        $totauxTrimestres = [
-            '1er' => ['points' => 0, 'coefficients' => 0],
-            '2ème' => ['points' => 0, 'coefficients' => 0],
-            '3ème' => ['points' => 0, 'coefficients' => 0],
-        ];
-
-        foreach ($notes as $note) {
-            $matiereId = $note->matiere_id;
-            $trimestre = $note->trimestre;
-
-            if (!isset($resultatsParMatiere[$matiereId])) {
-                $resultatsParMatiere[$matiereId] = [
-                    'matiere' => $note->matiere,
-                    'coefficient' => $note->matiere->coefficient,
-                    'trimestres' => [
-                        '1er' => null,
-                        '2ème' => null,
-                        '3ème' => null,
-                    ],
-                    'moyenne_annuelle' => 0,
-                ];
-            }
-
-            $noteValue = floatval($note->note);
-            $resultatsParMatiere[$matiereId]['trimestres'][$trimestre] = $noteValue;
-
-            // Calculer les totaux pour les moyennes trimestrielles
-            if ($noteValue > 0) {
-                $totauxTrimestres[$trimestre]['points'] += $noteValue * $note->matiere->coefficient;
-                $totauxTrimestres[$trimestre]['coefficients'] += $note->matiere->coefficient;
-            }
-        }
-
-        // Calculer les moyennes annuelles par matière
-        foreach ($resultatsParMatiere as $matiereId => &$resultat) {
-            $notesValides = array_filter($resultat['trimestres'], function ($note) {
-                return $note !== null;
-            });
-
-            if (count($notesValides) > 0) {
-                $resultat['moyenne_annuelle'] = array_sum($notesValides) / count($notesValides);
-            }
-        }
-
-        // Calculer les moyennes par trimestre
-        $moyennesTrimestrielles = [];
-        foreach ($totauxTrimestres as $trimestre => $data) {
-            if ($data['coefficients'] > 0) {
-                $moyennesTrimestrielles[$trimestre] = round($data['points'] / $data['coefficients'], 2);
-            } else {
-                $moyennesTrimestrielles[$trimestre] = 0;
-            }
-        }
-
-        return [
-            'matieres' => array_values($resultatsParMatiere),
-            'moyennes_trimestrielles' => $moyennesTrimestrielles,
-        ];
+        return $this->bulletinService->calculerResultatsEleve($inscriptionId);
     }
 
     /**
-     * Calculer la moyenne générale d'un élève (moyenne des 3 trimestres)
+     * Calculer la moyenne générale d'un élève (moyenne des trimestres avec notes)
      */
     private function calculerMoyenneGenerale($resultats)
     {
-        if (!isset($resultats['moyennes_trimestrielles'])) {
-            return 0;
-        }
-
-        $moyennes = array_filter($resultats['moyennes_trimestrielles'], function ($moyenne) {
-            return $moyenne > 0;
-        });
-
-        if (count($moyennes) > 0) {
-            return round(array_sum($moyennes) / 3 , 2);
-        }
-
-        return 0;
+        return $this->bulletinService->calculerMoyenneGenerale($resultats);
     }
 
     /**
@@ -233,22 +164,40 @@ class ResultatController extends Controller
      */
     private function getAppreciation($moyenne)
     {
-        if ($moyenne >= 16) return 'Excellent';
-        if ($moyenne >= 14) return 'Très Bien';
-        if ($moyenne >= 12) return 'Bien';
-        if ($moyenne >= 10) return 'Assez Bien';
-        if ($moyenne >= 8) return 'Passable';
-        return 'Insuffisant';
+        return $this->bulletinService->getAppreciation($moyenne);
     }
 
     /**
-     * Générer un bulletin PDF
+     * Générer et télécharger le bulletin PDF d'un élève (usage admin).
+     * L'année scolaire est optionnelle en query string (?annee_id=...) ;
+     * l'année active est utilisée par défaut.
      */
-    public function generateBulletin($eleveId, $anneeId = null)
+    public function generateBulletin(Request $request, $eleveId)
     {
-        // Cette méthode peut être implémentée plus tard pour générer un PDF
-        // Pour l'instant, on redirige vers la vue des résultats
-        return redirect()->route('resultats.index', ['eleve_id' => $eleveId, 'annee_id' => $anneeId]);
+        $eleve = Eleve::findOrFail($eleveId);
+        $anneeId = $request->get('annee_id');
+
+        if (!$anneeId) {
+            $anneeActive = AnneeScolaire::where('active', 1)->first();
+            $anneeId = $anneeActive?->id;
+        }
+
+        $inscription = Inscription::with(['salle.niveau', 'annee'])
+            ->where('eleve_id', $eleveId)
+            ->when($anneeId, fn ($q) => $q->where('annee_scolaire_id', $anneeId))
+            ->where('etat', 'active')
+            ->first();
+
+        if (!$inscription) {
+            return redirect()
+                ->route('resultats.index', ['eleve_id' => $eleveId])
+                ->with('error', "Aucune inscription active trouvée pour cet élève sur l'année demandée.");
+        }
+
+        $pdf = $this->bulletinService->genererPdf($eleve, $inscription);
+        $nomFichier = $this->bulletinService->nomFichierBulletin($eleve, $inscription);
+
+        return $pdf->download($nomFichier);
     }
 
     /**

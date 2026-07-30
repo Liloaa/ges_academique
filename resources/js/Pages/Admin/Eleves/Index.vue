@@ -46,12 +46,20 @@ const getInscriptionActive = (eleve) => {
   <div class="p-8">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold text-gray-800">Gestion des Élèves</h1>
-      <Link
-        href="/admin/eleves/create"
-        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-      >
-        ➕ Ajouter un élève
-      </Link>
+      <div class="flex gap-3">
+        <a
+          :href="`/admin/eleves/export/excel?search=${encodeURIComponent(search)}`"
+          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition flex items-center gap-2"
+        >
+          📊 Exporter Excel
+        </a>
+        <Link
+          href="/admin/eleves/create"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+          ➕ Ajouter un élève
+        </Link>
+      </div>
     </div>
 
     <!-- Filtres -->

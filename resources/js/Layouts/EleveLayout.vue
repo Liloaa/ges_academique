@@ -7,6 +7,7 @@
         <p class="sub-greeting">Bonne journée pour le travail !</p>
       </div>
       <div class="header-right">
+        <NotificationBell />
         <Link :href="route('eleve.profile.edit')" class="user-profile">
           <div class="user-avatar">
             <div class="avatar-placeholder">
@@ -69,6 +70,7 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
+import NotificationBell from '@/Components/NotificationBell.vue'
 
 // Récupérer les données de la page
 const page = usePage()
@@ -129,6 +131,12 @@ const getUserInitials = (name) => {
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s ease;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .user-profile:hover {

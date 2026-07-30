@@ -4,14 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Eleve;
 use App\Models\User;
+use App\Exports\ElevesExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EleveController extends Controller
 {
+    // EXPORT EXCEL DE LA LISTE DES ELEVES
+    public function export(Request $request)
+    {
+        $search = $request->get('search');
+        $nomFichier = 'eleves-' . now()->format('Y-m-d') . '.xlsx';
+
+        return Excel::download(new ElevesExport($search), $nomFichier);
+    }
+
+
     // LISTE DES ELEVES
     public function index()
     {

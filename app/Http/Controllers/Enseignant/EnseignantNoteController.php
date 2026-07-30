@@ -9,6 +9,7 @@ use App\Models\Inscription;
 use App\Models\Enseignant;
 use App\Models\Salle;
 use App\Models\AnneeScolaire;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,10 @@ use Illuminate\Support\Facades\Log;
 
 class EnseignantNoteController extends Controller
 {
+    public function __construct(private NotificationService $notificationService)
+    {
+    }
+
     /**
      * Afficher la liste des classes/matières de l'enseignant
      */
@@ -154,7 +159,7 @@ class EnseignantNoteController extends Controller
                         ->where('matiere_id', $validated['matiere_id'])
                         ->where('trimestre', $validated['trimestre'])
                         ->first();
-                    
+
                     if ($noteExistante) {
                         // Mettre à jour la note existante
                         $noteExistante->update([
@@ -175,6 +180,14 @@ class EnseignantNoteController extends Controller
                         ]);
                         $notesCreees++;
                     }
+
+                    $this->notificationService->notifierNoteAjoutee(
+                        $noteData['inscription_id'],
+                        $matiere,
+                        $validated['trimestre'],
+                        (float) $noteData['note'],
+                        (bool) $noteExistante
+                    );
                 }
             }
             

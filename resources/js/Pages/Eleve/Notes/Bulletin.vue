@@ -246,42 +246,31 @@ const props = defineProps({
 const telechargementEnCours = ref(false)
 
 // Méthode de téléchargement en PDF
+// Le PDF est désormais généré côté serveur (DomPDF) via BulletinService,
+// ce qui garantit un rendu identique à celui utilisé par l'administration
+// et permet une génération en masse (ex: tous les bulletins d'une classe).
 const telechargerPDF = async () => {
   try {
     telechargementEnCours.value = true
-    
-    // Dynamiquement importer les bibliothèques nécessaires
-    const html2pdfModule = await import('html2pdf.js')
-    const html2pdf = html2pdfModule.default
-    
-    const element = document.getElementById('bulletin-a-imprimer')
-    
-    // Options de configuration pour le PDF - optimisées pour une page
-    const options = {
-      margin: [5, 5, 5, 5],  // Marges réduites
-      filename: `bulletin_${props.eleve.nom}_${props.eleve.prenom}_${props.inscriptionActive?.annee?.libelle || 'annee_scolaire'}.pdf`,
-      image: { type: 'jpeg', quality: 0.95 },
-      html2canvas: { 
-        scale: 1.8,  // Échelle légèrement réduite pour tout faire tenir
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#FFFFFF',
-        width: 794,  // Largeur A4 en pixels à 96 DPI
-        height: 1123, // Hauteur A4 en pixels
-        windowWidth: 794,
-        windowHeight: 1123
-      },
-      jsPDF: { 
-        unit: 'mm', 
-        format: 'a4', 
-        orientation: 'portrait',
-        compress: true
-      }
+
+    const response = await fetch(route('eleve.notes.bulletin.pdf'), {
+      headers: { Accept: 'application/pdf' },
+    })
+
+    if (!response.ok) {
+      throw new Error('Le serveur n\'a pas pu générer le bulletin.')
     }
-    
-    // Générer et télécharger le PDF
-    await html2pdf().set(options).from(element).save()
-    
+
+    const blob = await response.blob()
+    const url = window.URL.createObjectURL(blob)
+    const lien = document.createElement('a')
+    lien.href = url
+    lien.download = `bulletin_${props.eleve.nom}_${props.eleve.prenom}_${props.inscriptionActive?.annee?.libelle || 'annee_scolaire'}.pdf`
+    document.body.appendChild(lien)
+    lien.click()
+    lien.remove()
+    window.URL.revokeObjectURL(url)
+
   } catch (error) {
     console.error('Erreur lors de la génération du PDF:', error)
     alert('Erreur lors de la génération du PDF. Veuillez réessayer.')

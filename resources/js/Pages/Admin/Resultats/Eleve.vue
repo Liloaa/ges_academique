@@ -82,6 +82,13 @@ const getBgCouleurMoyenne = (moyenne) => {
             {{ annee.libelle }}
           </option>
         </select>
+        <a
+          v-if="inscription"
+          :href="`/admin/resultats/bulletin/${eleve.id}${selectedAnnee ? `?annee_id=${selectedAnnee}` : ''}`"
+          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition flex items-center gap-2"
+        >
+          📄 Bulletin PDF
+        </a>
         <Link
           href="/admin/resultats"
           class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
