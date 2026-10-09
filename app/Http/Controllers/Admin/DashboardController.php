@@ -67,12 +67,12 @@ class DashboardController extends Controller
         $statistiquesMensuelles = [];
         if ($anneeActive) {
             $statistiquesMensuelles = Inscription::select(
-                DB::raw('MONTH(date_inscription) as mois'),
+                DB::raw('CAST(EXTRACT(MONTH FROM date_inscription) AS INTEGER) as mois'),
                 DB::raw('COUNT(*) as nombre')
             )
                 ->where('annee_scolaire_id', $anneeActive->id)
                 ->whereYear('date_inscription', date('Y'))
-                ->groupBy(DB::raw('MONTH(date_inscription)'))
+                ->groupBy(DB::raw('EXTRACT(MONTH FROM date_inscription)'))
                 ->orderBy('mois')
                 ->get()
                 ->map(function ($item) {
