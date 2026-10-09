@@ -34,6 +34,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
+    protected $appends = ['name'];
+
     /**
      * Les attributs à caster.
      */
@@ -49,6 +51,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getFullNameAttribute(): string
     {
         return ucfirst($this->prenom) . ' ' . strtoupper($this->nom);
+    }
+
+    public function getNameAttribute(): string
+    {
+        return $this->full_name;
     }
 
     /**
