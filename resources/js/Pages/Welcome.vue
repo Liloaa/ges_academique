@@ -47,8 +47,8 @@ function handleImageError() {
     <main class="main-content">
       <div class="hero-section">
         <div class="app-title">
-          <h1>GES-ACADEM-ELEVES</h1>
-          <p class="app-subtitle">Système de Gestion des Élèves</p>
+          <h1>GES-ACADEMIQUE-ÉLÈVES</h1>
+          <p class="app-subtitle">Système de Gestion académique des Élèves</p>
         </div>
 
         <div class="description">
@@ -72,7 +72,7 @@ function handleImageError() {
     <!-- Pied de page -->
     <footer class="footer">
       <div class="footer-content">
-        <p>GES-ACADEM-ELEVES - Ministère de l'Éducation Nationale</p>
+        <p>GES-ACADEMIQUE-ÉLÈVES - Ministère de l'Éducation Nationale</p>
         <p>Tous droits réservés</p>
       </div>
     </footer>

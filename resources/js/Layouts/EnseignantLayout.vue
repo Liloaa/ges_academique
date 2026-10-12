@@ -23,7 +23,7 @@
       <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar-header">
-          <div class="app-logo">🎓 GES-ÉTUDIANT</div>
+          <div class="app-logo">🎓 GES-ACADEMIQUE-ÉLÈVES</div>
           <p class="app-subtitle">Panneau d'Enseignant</p>
         </div>
         

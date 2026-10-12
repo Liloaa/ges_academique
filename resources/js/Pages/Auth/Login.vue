@@ -35,7 +35,7 @@ const submit = () => {
         <!-- Colonne de gauche avec l'image de fond -->
         <div class="login-image-section">
             <div class="image-overlay">
-                <h2>Bienvenue sur GES-ÉTUDIANT</h2>
+                <h2>Bienvenue sur GES-ACADEMIQUE-ÉLÈVES</h2>
                 <p>Système de Gestion des Élèves</p>
             </div>
         </div>
@@ -48,7 +48,7 @@ const submit = () => {
                         <img src="/images/men-logo.jpg" alt="Logo Ministère de l'Éducation Nationale" class="logo-image" />
                     </div>
                     <div class="app-info">
-                        <h1>GES-ÉTUDIANT</h1>
+                        <h1>GES-ACADEMIQUE-ÉLÈVES</h1>
                         <p>Ministère de l'Éducation Nationale</p>
                     </div>
                 </div>
