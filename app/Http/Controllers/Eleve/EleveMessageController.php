@@ -138,6 +138,10 @@ class EleveMessageController extends Controller
             abort(403, 'Accès non autorisé à ce message.');
         }
 
+        if ($message->destinataire_id == $user->id) {
+            $this->notificationService->marquerMessageLu($user, $message->id);
+        }
+
         // Marquer comme lu si l'élève est le destinataire
         if ($message->destinataire_id == $user->id && !$message->lu) {
             $message->update(['lu' => true]);
@@ -201,6 +205,8 @@ class EleveMessageController extends Controller
         Message::where('destinataire_id', $user->id)
             ->where('lu', false)
             ->update(['lu' => true]);
+
+        $this->notificationService->marquerTousMessagesLus($user);
 
         return back()->with('success', 'Tous les messages ont été marqués comme lus.');
     }

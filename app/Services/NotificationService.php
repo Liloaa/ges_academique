@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Inscription;
 use App\Models\Matiere;
 use App\Models\Message;
+use App\Models\User;
 use App\Notifications\NoteAjouteeNotification;
 use App\Notifications\NouveauMessageNotification;
 
@@ -46,5 +47,29 @@ class NotificationService
         }
 
         $message->destinataire->notify(new NouveauMessageNotification($message));
+    }
+
+    /**
+     * Marque comme lue la notification « nouveau message » liée à ce message
+     * pour l'utilisateur (appelé quand il ouvre le message).
+     */
+    public function marquerMessageLu(User $user, int $messageId): void
+    {
+        $user->unreadNotifications()
+            ->where('type', NouveauMessageNotification::class)
+            ->get()
+            ->filter(fn ($n) => ($n->data['message_id'] ?? null) == $messageId)
+            ->each->markAsRead();
+    }
+
+    /**
+     * Marque comme lues toutes les notifications « nouveau message »
+     * (appelé par « Marquer tous les messages comme lus »).
+     */
+    public function marquerTousMessagesLus(User $user): void
+    {
+        $user->unreadNotifications()
+            ->where('type', NouveauMessageNotification::class)
+            ->update(['read_at' => now()]);
     }
 }

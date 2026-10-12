@@ -82,6 +82,10 @@ class MessageController extends Controller
             abort(403);
         }
 
+        if ($message->destinataire_id == Auth::id()) {
+            $this->notificationService->marquerMessageLu(Auth::user(), $message->id);
+        }
+
         if ($message->destinataire_id == Auth::id() && !$message->lu) {
             $message->update(['lu' => true]);
         }
