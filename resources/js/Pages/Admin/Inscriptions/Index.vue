@@ -104,7 +104,7 @@ const cycleLabels = {
                     </Link>
                     <Link
                       :href="`/admin/resultats?eleve_id=${inscription.eleve_id}&annee_id=${inscription.annee_scolaire_id}`"
-                      class="text-purple-600 hover:text-purple-800 transition-colors flex items-center"
+                      class="text-green-600 hover:text-green-800 transition-colors flex items-center"
                     >
                       <span class="mr-1">📊</span> Résultats
                     </Link>

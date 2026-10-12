@@ -81,7 +81,7 @@ const confirmDelete = (id) => {
                 :class="{
                   'bg-blue-100 text-blue-800': salle.niveau?.cycle === 'primaire',
                   'bg-green-100 text-green-800': salle.niveau?.cycle === 'college',
-                  'bg-purple-100 text-purple-800': salle.niveau?.cycle === 'lycee'
+                  'bg-green-100 text-green-800': salle.niveau?.cycle === 'lycee'
                 }">
                 {{ salle.niveau?.cycle || '—' }}
               </span>

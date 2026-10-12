@@ -91,7 +91,7 @@ const getBgCouleurMoyenne = (moyenne) => {
         </a>
         <Link
           href="/admin/resultats"
-          class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
+          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
         >
           📊 Vue générale
         </Link>
@@ -253,11 +253,11 @@ const getBgCouleurMoyenne = (moyenne) => {
         </div>
         <div class="text-green-800">Matières Validées</div>
       </div>
-      <div class="bg-purple-50 p-4 rounded-lg text-center">
-        <div class="text-2xl font-bold text-purple-600">
+      <div class="bg-green-50 p-4 rounded-lg text-center">
+        <div class="text-2xl font-bold text-green-600">
           {{ getAppreciation(moyenneGenerale) }}
         </div>
-        <div class="text-purple-800">Appréciation Générale</div>
+        <div class="text-green-800">Appréciation Générale</div>
       </div>
     </div>
   </div>

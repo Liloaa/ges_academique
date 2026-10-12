@@ -26,7 +26,7 @@
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <!-- Statistiques générales -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg shadow-lg p-6 text-white">
+          <div class="bg-gradient-to-r from-blue-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium">Moyenne générale</p>
@@ -52,7 +52,7 @@
             </div>
           </div>
           
-          <div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg shadow-lg p-6 text-white">
+          <div class="bg-gradient-to-r from-green-500 to-pink-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium">Matières enseignées</p>
@@ -166,7 +166,7 @@
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <Link
                       :href="route('enseignant.notes.historique', stat.matiere.id)"
-                      class="text-indigo-600 hover:text-indigo-900"
+                      class="text-green-600 hover:text-green-900"
                     >
                       Voir historique
                     </Link>
@@ -249,6 +249,6 @@ const props = defineProps({
 }
 
 .btn-secondary {
-  @apply inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150;
+  @apply inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150;
 }
 </style>

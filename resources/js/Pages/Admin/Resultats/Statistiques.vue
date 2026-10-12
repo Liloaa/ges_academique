@@ -245,7 +245,7 @@ const statsParCycle = computed(() => {
             >
               <td class="px-4 py-3 font-medium">{{ stat.niveau }}</td>
               <td class="px-4 py-3 text-center">
-                <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs">
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
                   {{ stat.cycle }}
                 </span>
               </td>

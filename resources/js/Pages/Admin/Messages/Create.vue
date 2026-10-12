@@ -250,7 +250,7 @@ const formatPreview = (text) => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   color: white;
 }
 
@@ -307,8 +307,8 @@ const formatPreview = (text) => {
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #42993c;
+  box-shadow: 0 0 0 3px rgba(93, 174, 88, 0.1);
 }
 
 .form-textarea {

@@ -339,7 +339,7 @@ const getMaxInscriptions = () => {
   align-items: center;
   gap: 10px;
   padding: 12px 15px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   color: white;
   text-decoration: none;
   border-radius: 8px;
@@ -349,7 +349,7 @@ const getMaxInscriptions = () => {
 
 .action-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(93, 174, 88, 0.4);
 }
 
 .action-icon {
@@ -358,7 +358,7 @@ const getMaxInscriptions = () => {
 
 /* Dernières inscriptions */
 .view-all {
-  color: #667eea;
+  color: #42993c;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
@@ -383,7 +383,7 @@ const getMaxInscriptions = () => {
 .recent-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   border-radius: 50%;
   display: flex;
   align-items: center;

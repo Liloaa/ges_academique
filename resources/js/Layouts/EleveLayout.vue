@@ -94,7 +94,7 @@ const getUserInitials = (name) => {
 <style scoped>
 .eleve-layout {
   min-height: 100vh;
-  background: linear-gradient(135deg, #9ca9e4 0%, #a58dbe 100%);
+  background: linear-gradient(135deg, #b7f0c2 0%, #7cc483 100%);
   padding: 20px;
 }
 
@@ -147,7 +147,7 @@ const getUserInitials = (name) => {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #22c55e, #15803d);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -237,13 +237,13 @@ const getUserInitials = (name) => {
 }
 
 .nav-link:hover {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(34, 197, 94, 0.1);
+  color: #15803d;
   transform: translateX(5px);
 }
 
 .nav-link.active {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #22c55e, #15803d);
   color: white;
 }
 

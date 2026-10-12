@@ -113,7 +113,7 @@
           </h1>
           <p class="mt-2 text-gray-600">
             Bienvenue, {{ enseignant.prenom }} {{ enseignant.nom }}
-            <span v-if="anneeActive" class="block text-sm text-indigo-600 mt-1">
+            <span v-if="anneeActive" class="block text-sm text-green-600 mt-1">
               Année scolaire : {{ anneeActive.libelle }}
             </span>
           </p>
@@ -123,7 +123,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <button
             @click="goToStatistiques"
-            class="flex items-center justify-center gap-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-4 rounded-lg shadow hover:shadow-md transition"
+            class="flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-lg shadow hover:shadow-md transition"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -152,7 +152,7 @@
 
         <!-- Section Matières enseignées -->
         <div class="bg-white rounded-xl shadow-lg mb-8 overflow-hidden">
-          <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4">
+          <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
             <h2 class="text-xl font-bold text-white flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -173,11 +173,11 @@
               <div
                 v-for="matiere in matieres"
                 :key="matiere.id"
-                class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 hover:shadow-md transition"
+                class="border border-gray-200 rounded-lg p-4 hover:border-green-300 hover:shadow-md transition"
               >
                 <div class="flex justify-between items-start mb-3">
                   <h3 class="font-bold text-lg text-gray-800">{{ matiere.nomMatiere }}</h3>
-                  <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                  <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                     Coef. {{ matiere.coefficient }}
                   </span>
                 </div>
@@ -197,7 +197,7 @@
                   </span>
                   <a
                     :href="route('enseignant.notes.historique', { matiere: matiere.id })"
-                    class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center gap-1"
+                    class="text-green-600 hover:text-green-800 text-sm font-medium flex items-center gap-1"
                   >
                     Historique
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -260,7 +260,7 @@
                     <div
                       v-for="matiere in salle.matières_enseignees"
                       :key="matiere.id"
-                      class="border border-gray-100 rounded-lg p-4 bg-white hover:border-indigo-200 hover:shadow-sm transition"
+                      class="border border-gray-100 rounded-lg p-4 bg-white hover:border-green-200 hover:shadow-sm transition"
                     >
                       <div class="flex justify-between items-start mb-3">
                         <h4 class="font-bold text-gray-800">{{ matiere.nomMatiere }}</h4>
@@ -273,7 +273,7 @@
                         <div class="flex gap-2">
                           <a
                             :href="route('enseignant.notes.eleves', { salle: salle.id, matiere: matiere.id })"
-                            class="inline-flex items-center gap-1 px-3 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition"
+                            class="inline-flex items-center gap-1 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition"
                           >
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -311,7 +311,7 @@
         </div>
 
         <!-- Pied de page informatif -->
-        <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+        <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg">
           <div class="flex items-start">
             <svg class="w-6 h-6 text-blue-600 mt-1 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -440,7 +440,7 @@ const goToStatistiques = () => {
 
 /* En-tête enseignant */
 .enseignant-header {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   border-radius: 12px;
   padding: 25px;
   color: white;
@@ -587,7 +587,7 @@ const goToStatistiques = () => {
 }
 
 .cycle-badge {
-  background: #667eea;
+  background: #5dae58;
   color: white;
   padding: 4px 12px;
   border-radius: 20px;
@@ -638,7 +638,7 @@ const goToStatistiques = () => {
   padding: 10px 15px;
   background: #f7fafc;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #5dae58;
 }
 
 .matiere-name {

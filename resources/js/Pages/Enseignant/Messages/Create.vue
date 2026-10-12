@@ -361,7 +361,7 @@ const formatPreview = (text) => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   color: white;
 }
 
@@ -383,7 +383,7 @@ const formatPreview = (text) => {
 .btn-link {
   background: none;
   border: none;
-  color: #667eea;
+  color: #42993c;
   cursor: pointer;
   font-size: 0.9rem;
   padding: 0;
@@ -391,7 +391,7 @@ const formatPreview = (text) => {
 }
 
 .btn-link:hover {
-  color: #764ba2;
+  color: #42993c;
 }
 
 .message-form {
@@ -437,8 +437,8 @@ const formatPreview = (text) => {
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #42993c;
+  box-shadow: 0 0 0 3px rgba(93, 174, 88, 0.1);
 }
 
 .form-textarea {
@@ -452,7 +452,7 @@ const formatPreview = (text) => {
   padding: 10px;
   background: #f7fafc;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #5dae58;
 }
 
 .info-item {

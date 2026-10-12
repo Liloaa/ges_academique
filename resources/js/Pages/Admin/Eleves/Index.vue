@@ -109,7 +109,7 @@ const getInscriptionActive = (eleve) => {
                 <!-- Historique -->
                 <Link
                   :href="route('admin.eleves.historique', eleve.id)"
-                  class="px-2 py-1 bg-indigo-100 text-indigo-600 rounded hover:bg-indigo-200 transition"
+                  class="px-2 py-1 bg-green-100 text-green-600 rounded hover:bg-green-200 transition"
                 >
                   📜 Historique
                 </Link>

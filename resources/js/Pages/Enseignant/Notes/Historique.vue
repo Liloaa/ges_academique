@@ -26,7 +26,7 @@
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <!-- Informations matière -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-          <div class="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+          <div class="p-6 bg-gradient-to-r from-blue-50 to-green-50 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <div>
                 <h3 class="text-lg font-medium text-gray-900">
@@ -95,7 +95,7 @@
             <div class="bg-white rounded-lg shadow p-4">
               <div class="text-center">
                 <p class="text-sm text-gray-500">Élèves ≥ 10/20</p>
-                <p class="text-2xl font-bold text-purple-600">
+                <p class="text-2xl font-bold text-green-600">
                   {{ statistiques[activeTrimestre].notes_sup_10 }}
                 </p>
               </div>
@@ -178,7 +178,7 @@
                     <div class="flex space-x-2">
                       <Link
                         :href="route('enseignant.notes.edit', note.id)"
-                        class="text-indigo-600 hover:text-indigo-900"
+                        class="text-green-600 hover:text-green-900"
                       >
                         Modifier
                       </Link>
@@ -289,7 +289,7 @@ const deleteNote = () => {
 }
 
 .btn-secondary {
-  @apply inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150;
+  @apply inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150;
 }
 
 .btn-danger {

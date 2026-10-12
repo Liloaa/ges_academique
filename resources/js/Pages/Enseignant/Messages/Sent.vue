@@ -287,7 +287,7 @@ const deleteMessage = (id) => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   color: white;
 }
 

@@ -35,7 +35,7 @@
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <!-- En-tête de la saisie -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-          <div class="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+          <div class="p-6 bg-gradient-to-r from-blue-50 to-green-50 border-b border-gray-200">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
               <div class="mb-4 md:mb-0">
                 <h3 class="text-lg font-medium text-gray-900">
@@ -54,7 +54,7 @@
                   <select 
                     v-model="currentTrimestre"
                     @change="changeTrimestre"
-                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                    class="border-gray-300 focus:border-green-500 focus:ring-green-500 rounded-md shadow-sm"
                   >
                     <option v-for="t in trimestres" :key="t" :value="t">
                       {{ t }}
@@ -171,7 +171,7 @@
                           min="0"
                           max="20"
                           step="0.25"
-                          class="w-24 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                          class="w-24 border-gray-300 focus:border-green-500 focus:ring-green-500 rounded-md shadow-sm"
                           placeholder="0.00 - 20.00"
                           @input="validateNote(inscription.id)"
                         />
@@ -185,7 +185,7 @@
                       <input
                         v-model="comments[inscription.id]"
                         type="text"
-                        class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                        class="w-full border-gray-300 focus:border-green-500 focus:ring-green-500 rounded-md shadow-sm"
                         placeholder="Observations..."
                         maxlength="200"
                       />
@@ -460,7 +460,7 @@ const submitNotes = async () => {
 }
 
 .btn-secondary {
-  @apply inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150;
+  @apply inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150;
 }
 
 .btn-disabled {

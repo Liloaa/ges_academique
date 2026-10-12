@@ -394,7 +394,7 @@ const viewMessage = (messageId) => {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #667eea;
+  color: #42993c;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
@@ -440,7 +440,7 @@ const viewMessage = (messageId) => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   color: white;
 }
 
@@ -529,7 +529,7 @@ const viewMessage = (messageId) => {
 }
 
 .sender .user-avatar {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
 }
 
 .recipient .user-avatar {
@@ -664,7 +664,7 @@ const viewMessage = (messageId) => {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   color: white;
   border: none;
   border-radius: 8px;
@@ -676,7 +676,7 @@ const viewMessage = (messageId) => {
 
 .btn-reply:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(93, 174, 88, 0.4);
 }
 
 .reply-icon {
@@ -744,8 +744,8 @@ const viewMessage = (messageId) => {
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #42993c;
+  box-shadow: 0 0 0 3px rgba(93, 174, 88, 0.1);
 }
 
 .form-textarea {
@@ -865,7 +865,7 @@ const viewMessage = (messageId) => {
 }
 
 .timeline-marker.current {
-  background: #667eea;
+  background: #5dae58;
   width: 24px;
   height: 24px;
   left: -32px;
@@ -882,8 +882,8 @@ const viewMessage = (messageId) => {
 
 .conversation-item.current .conversation-content {
   background: white;
-  border-color: #667eea;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+  border-color: #42993c;
+  box-shadow: 0 4px 12px rgba(93, 174, 88, 0.1);
 }
 
 .conversation-content:hover {
@@ -942,7 +942,7 @@ const viewMessage = (messageId) => {
 }
 
 .current-indicator {
-  color: #667eea;
+  color: #42993c;
   font-weight: 500;
   margin-left: 5px;
 }

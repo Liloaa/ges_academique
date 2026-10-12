@@ -300,7 +300,7 @@ onMounted(() => {
 .back-link {
   display: inline-block;
   margin-bottom: 10px;
-  color: #667eea;
+  color: #42993c;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
@@ -337,7 +337,7 @@ onMounted(() => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   color: white;
 }
 
@@ -400,7 +400,7 @@ onMounted(() => {
 
 .sender {
   font-weight: 600;
-  color: #667eea;
+  color: #42993c;
 }
 
 .recipient {
@@ -559,8 +559,8 @@ onMounted(() => {
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #42993c;
+  box-shadow: 0 0 0 3px rgba(93, 174, 88, 0.1);
 }
 
 .form-textarea {
@@ -618,8 +618,8 @@ onMounted(() => {
 
 .thread-message.current {
   background: #ebf4ff;
-  border-color: #667eea;
-  border-left: 4px solid #667eea;
+  border-color: #42993c;
+  border-left: 4px solid #5dae58;
 }
 
 .thread-header {
@@ -642,7 +642,7 @@ onMounted(() => {
 
 .thread-current {
   font-size: 0.85rem;
-  color: #667eea;
+  color: #42993c;
   font-weight: 500;
 }
 

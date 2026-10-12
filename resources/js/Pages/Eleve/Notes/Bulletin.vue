@@ -45,7 +45,7 @@
       <!-- Bulletin principal -->
       <div class="bg-white shadow-lg sm:rounded-lg overflow-hidden" id="bulletin-a-imprimer">
         <!-- En-tête du bulletin -->
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6">
+        <div class="bg-gradient-to-r from-blue-600 to-green-700 text-white p-6">
           <div class="flex justify-between items-start">
             <div>
               <h2 class="text-2xl font-bold">BULLETIN SCOLAIRE</h2>
@@ -180,7 +180,7 @@
           </div>
 
           <!-- Moyenne générale et appréciation -->
-          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded border border-blue-200">
+          <div class="bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded border border-blue-200">
             <div class="flex justify-between items-center">
               <div>
                 <p class="text-xs text-gray-600 uppercase tracking-wide">MOYENNE GÉNÉRALE</p>
@@ -301,7 +301,7 @@ const formatDate = (dateString) => {
 const getNoteBadgeClass = (note) => {
   if (note >= 16) return 'bg-green-100 text-green-800'
   if (note >= 14) return 'bg-blue-100 text-blue-800'
-  if (note >= 12) return 'bg-indigo-100 text-indigo-800'
+  if (note >= 12) return 'bg-green-100 text-green-800'
   if (note >= 10) return 'bg-yellow-100 text-yellow-800'
   if (note >= 8) return 'bg-orange-100 text-orange-800'
   return 'bg-red-100 text-red-800'
@@ -319,8 +319,8 @@ const getNoteBadgeText = (note) => {
 const getAppreciationClass = (appreciation) => {
   switch (appreciation) {
     case 'Excellent': return 'bg-gradient-to-r from-green-500 to-emerald-600'
-    case 'Très Bien': return 'bg-gradient-to-r from-blue-500 to-indigo-600'
-    case 'Bien': return 'bg-gradient-to-r from-indigo-400 to-purple-500'
+    case 'Très Bien': return 'bg-gradient-to-r from-blue-500 to-green-600'
+    case 'Bien': return 'bg-gradient-to-r from-green-400 to-green-500'
     case 'Assez Bien': return 'bg-gradient-to-r from-yellow-400 to-orange-500'
     case 'Passable': return 'bg-gradient-to-r from-orange-400 to-red-500'
     default: return 'bg-gradient-to-r from-red-400 to-pink-500'

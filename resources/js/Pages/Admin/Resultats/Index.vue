@@ -43,7 +43,7 @@ const getAppreciationClass = (moyenne) => {
       <h1 class="text-2xl font-bold text-gray-800">📊 Résultats Généraux</h1>
       <Link
         href="/admin/resultats/statistiques"
-        class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
+        class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
       >
         📈 Statistiques
       </Link>

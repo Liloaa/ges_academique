@@ -442,8 +442,8 @@ const getAppreciation = (note) => {
 // Fonction pour déterminer la classe de gradient selon la note
 const getNoteGradientClass = (note) => {
   if (note >= 16) return 'bg-gradient-to-br from-green-500 to-emerald-600'
-  if (note >= 14) return 'bg-gradient-to-br from-blue-500 to-indigo-600'
-  if (note >= 12) return 'bg-gradient-to-br from-indigo-400 to-purple-500'
+  if (note >= 14) return 'bg-gradient-to-br from-blue-500 to-green-600'
+  if (note >= 12) return 'bg-gradient-to-br from-green-400 to-green-500'
   if (note >= 10) return 'bg-gradient-to-br from-yellow-400 to-orange-500'
   if (note >= 8) return 'bg-gradient-to-br from-orange-400 to-red-500'
   return 'bg-gradient-to-br from-red-400 to-pink-500'
@@ -471,7 +471,7 @@ const getNoteCellClass = (note) => {
 const getProgressColor = (moyenne) => {
   if (moyenne >= 16) return '#10b981'
   if (moyenne >= 14) return '#3b82f6'
-  if (moyenne >= 12) return '#8b5cf6'
+  if (moyenne >= 12) return '#5dae58'
   if (moyenne >= 10) return '#f59e0b'
   if (moyenne >= 8) return '#f97316'
   return '#ef4444'
@@ -481,7 +481,7 @@ const getProgressColor = (moyenne) => {
 const getProgressTextColor = (moyenne) => {
   if (moyenne >= 16) return 'text-green-600'
   if (moyenne >= 14) return 'text-blue-600'
-  if (moyenne >= 12) return 'text-indigo-600'
+  if (moyenne >= 12) return 'text-green-600'
   if (moyenne >= 10) return 'text-yellow-600'
   if (moyenne >= 8) return 'text-orange-600'
   return 'text-red-600'
@@ -598,7 +598,7 @@ const getProgressTextColor = (moyenne) => {
 /* Classes pour les couleurs des notes */
 .excellent { color: #10b981; }
 .very-good { color: #3b82f6; }
-.good { color: #8b5cf6; }
+.good { color: #5dae58; }
 .fair { color: #f59e0b; }
 .passable { color: #f97316; }
 .insufficient { color: #ef4444; }
@@ -614,7 +614,7 @@ const getProgressTextColor = (moyenne) => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   border-radius: 4px;
   transition: width 0.5s ease;
 }
@@ -633,7 +633,7 @@ const getProgressTextColor = (moyenne) => {
   padding: 15px;
   background: #f7fafc;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #5dae58;
 }
 
 .note-matiere {
@@ -752,7 +752,7 @@ const getProgressTextColor = (moyenne) => {
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #5dae58, #42993c);
   color: white;
 }
 
@@ -830,7 +830,7 @@ const getProgressTextColor = (moyenne) => {
 
 .bulletin-btn {
   padding: 10px 20px;
-  background: #4f46e5;
+  background: #42993c;
   color: white;
   border-radius: 8px;
   border: none;
@@ -843,7 +843,7 @@ const getProgressTextColor = (moyenne) => {
 }
 
 .bulletin-btn:hover {
-  background: #4338ca;
+  background: #42993c;
   transform: translateY(-2px);
 }
 
